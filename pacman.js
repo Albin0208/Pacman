@@ -28,6 +28,11 @@ class Pacman {
       Om man rör sig i x-led och vill byta till y-led,
       men y-led leder till krock med vägg = fortsätt i
       samma x-led riktning.
+
+      TODO
+      Man kan kolla spara en gamla positionen och kolla om den kan flytta till den nya positionen 30px bort,
+      om inte behåll den gamla positionen, annars flytta spelaren med this.speed till spelaren är på den nya
+      positionen och upprepa samma koll för nästa flytt
     */
     if (xdir != 0) {
       if (this.wallcollision(xdir, ydir)) {
