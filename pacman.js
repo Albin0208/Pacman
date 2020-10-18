@@ -1,98 +1,62 @@
 class Pacman {
   constructor(maze) {
-    this.position = {
-      x: width / 2,
-      y: 15 + 15 * scl,
-    };
+    this.gridPos = { x: 9, y: 15 };
+    this.pixPos = { x: this.gridPos.x * scl, y: this.gridPos.y * scl };
+    this.r = 12;
+    this.speed = 2;
     this.direction = { x: 0, y: 0 };
-    this.speed = 3;
+    this.stored_dir = null;
     this.maze = maze;
+    this.ableToMove = true;
   }
 
   show() {
     fill(255, 255, 0);
-    ellipse(this.position.x, this.position.y, 24);
+    circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
+    noFill();
+    stroke(255, 0, 0);
+    // rect(this.gridPos.x * scl, this.gridPos.y * scl, scl);
   }
 
   update() {
-    this.handleMovement(this.direction.x, this.direction.y);
-  }
-
-  handleMovement(xdir, ydir) {
-    /*TODO
-      Kolla om nästa steg resulterar i krock med vägg.
-      Om man rör sig i x-led och vill byta till y-led,
-      men y-led leder till krock med vägg = fortsätt i
-      samma x-led riktning.
-
-      TODO
-      Man kan kolla spara den gamla positionen och kolla om den kan flytta till den nya positionen 30px bort,
-      om inte behåll den gamla positionen, annars flytta spelaren med this.speed till spelaren är på den nya
-      positionen och upprepa samma koll för nästa flytt
-    */
-    var oldPosition = { x: 0, y: 0 };
-
-    oldPosition.x = this.position.x;
-    oldPosition.y = this.position.y;
-
-    if (xdir > 0) {
-      this.position.x += 30;
-      if (this.contains(this.position.x, this.position.y)) {
-        this.position = oldPosition;
-      } else {
-        this.position = oldPosition;
-        this.setdir(xdir, ydir);
-        // this.move();
-        this.position.x += 30;
-      }
-    } else if (xdir < 0) {
-      this.position.x -= 30;
-      if (this.contains(this.position.x, this.position.y)) {
-        this.position = oldPosition;
-      } else {
-        this.position = oldPosition;
-        this.setdir(xdir, ydir);
-        // this.move();
-        this.position.x -= 30;
-      }
-    } else if (ydir > 0) {
-      this.position.y += 30;
-      if (this.contains(this.position.x, this.position.y)) {
-        this.position = oldPosition;
-      } else {
-        this.position = oldPosition;
-        this.setdir(xdir, ydir);
-        // this.move();
-        this.position.y += 30;
-      }
-    } else if (ydir < 0) {
-      this.position.y -= 30;
-      if (this.contains(this.position.x, this.position.y)) {
-        this.position = oldPosition;
-      } else {
-        this.position = oldPosition;
-        this.setdir(xdir, ydir);
-        // this.move();
-        this.position.y -= 30;
-      }
+    if (this.ableToMove) {
+      this.pixPos.x += this.direction.x * this.speed;
+      this.pixPos.y += this.direction.y * this.speed;
     }
-  }
 
-  // move() {
-  //   this.position.x += this.direction.x * this.speed;
-  //   this.position.y += this.direction.y * this.speed;
-  // }
-
-  setdir(xdir, ydir) {
-    this.direction.x = xdir;
-    this.direction.y = ydir;
-  }
-
-  contains(x, y) {
-    if (this.maze.grid[floor(y / scl)][floor(x / scl)] == 0) {
-      console.log("Wall detected");
-      return true;
+    if (this.timeToMove() && this.stored_dir != null) {
+      this.direction = this.stored_dir;
+      this.ableToMove = this.canMove();
     }
-    return false;
+
+    this.gridPos.x = floor((this.pixPos.x + scl / 2) / scl);
+    this.gridPos.y = floor((this.pixPos.y + scl / 2) / scl);
+  }
+
+  move(xdir, ydir) {
+    this.stored_dir = { x: xdir, y: ydir };
+  }
+
+  /**
+   * Kolla om den är i mitten av rutan
+   * @returns Om den är i mitten av rutan
+   */
+  timeToMove() {
+    if (this.pixPos.x % scl == 0 && this.direction.y == 0) return true;
+    if (this.pixPos.y % scl == 0 && this.direction.x == 0) return true;
+  }
+
+  /**
+   * Koll om nästa ruta i maze är en vägg
+   * @return Om det går att flytta sig till rutan
+   */
+  canMove() {
+    if (
+      this.maze.grid[this.gridPos.y + this.direction.y][
+        this.gridPos.x + this.direction.x
+      ] == 0
+    )
+      return false;
+    return true;
   }
 }
