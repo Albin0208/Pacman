@@ -8,11 +8,11 @@ class Maze {
       [0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0],
       [0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0],
       [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
-      [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+      [4, 4, 4, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 4, 4, 4],
       [0, 0, 0, 0, 1, 0, 1, 0, 0, 3, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-      [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 1],
       [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-      [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+      [4, 4, 4, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 4, 4, 4],
       [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0],
@@ -23,24 +23,48 @@ class Maze {
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+    this.food = [];
   }
 
   show() {
     for (var i = 0; i < this.grid.length; i++) {
-      for (var j = 0; j < this.grid[i].length; j++) {
+      for (var j = 0; j < this.grid[i].length + 1; j++) {
         if (this.grid[i][j] == 0) {
           fill(0, 0, 255);
-          rect(j * scl, i * scl, scl);
+          // rect(j * scl, i * scl, scl);
         }
         if (this.grid[i][j] == 3) {
           fill(255);
-          rect(j * scl, i * scl + 10, scl, scl / 3);
+          // rect(j * scl, i * scl + 10, scl, scl / 3);
         }
-        // noFill();
+        noFill();
         noStroke();
-        // stroke(255);
-        // rect(j * scl, i * scl, scl);
+        stroke(255);
+        rect(j * scl, i * scl, scl);
+      }
+      // this.food[i].show();
+    }
+
+    // this.food.forEach((food) => {
+    //   food.show();
+    // });
+  }
+
+  initializeFood() {
+    for (var i = 0; i < this.grid.length; i++) {
+      for (var j = 0; j < this.grid[i].length; j++) {
+        if (this.grid[i][j] == 1) {
+          this.food.push(new Food(j, i));
+        }
       }
     }
   }
+
+  // /**
+  //  * Hämtar arrayen med matens koordinater
+  //  * @returns arrayen med matens koordinater
+  //  */
+  // getFood() {
+  //   return this.food;
+  // }
 }

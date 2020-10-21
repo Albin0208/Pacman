@@ -1,24 +1,30 @@
 class Pacman {
-  constructor(maze) {
+  constructor(maze, food) {
     this.gridPos = { x: 9, y: 15 };
     this.pixPos = { x: this.gridPos.x * scl, y: this.gridPos.y * scl };
     this.r = 12;
     this.speed = 2;
     this.direction = { x: 0, y: 0 };
     this.stored_dir = null;
-    this.maze = maze;
     this.ableToMove = true;
+    this.score = 0;
+    this.food = food;
+    this.maze = maze;
   }
 
+  /**
+   * Rita ut pacman
+   */
   show() {
     fill(255, 255, 0);
     circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
-    noFill();
-    stroke(255, 0, 0);
+    // noFill();
+    // stroke(255, 0, 0);
     // rect(this.gridPos.x * scl, this.gridPos.y * scl, scl);
   }
 
   update() {
+    //Om man kan flytta, gör det i riktiningen och med en viss hastighet
     if (this.ableToMove) {
       this.pixPos.x += this.direction.x * this.speed;
       this.pixPos.y += this.direction.y * this.speed;
@@ -27,8 +33,10 @@ class Pacman {
     if (this.timeToMove() && this.stored_dir != null) {
       this.direction = this.stored_dir;
       this.ableToMove = this.canMove();
+      // this.checkFood();
     }
 
+    //Sätter grid positionen i förhållande till pixel positionen
     this.gridPos.x = floor((this.pixPos.x + scl / 2) / scl);
     this.gridPos.y = floor((this.pixPos.y + scl / 2) / scl);
   }
@@ -44,10 +52,11 @@ class Pacman {
   timeToMove() {
     if (this.pixPos.x % scl == 0 && this.direction.y == 0) return true;
     if (this.pixPos.y % scl == 0 && this.direction.x == 0) return true;
+    return false;
   }
 
   /**
-   * Koll om nästa ruta i maze är en vägg
+   * Koll om det går att flytta till nästa ruta i rutnätet
    * @return Om det går att flytta sig till rutan
    */
   canMove() {
@@ -58,5 +67,12 @@ class Pacman {
     )
       return false;
     return true;
+  }
+
+  checkFood() {
+    if (this.food.eatFood(this.gridPos)) {
+      this.score += 10;
+    }
+    console.log(this.score);
   }
 }
