@@ -1,4 +1,4 @@
-let maze, pacman, food;
+let maze, pacman, scoreText;
 // let bg;
 const scl = 30;
 
@@ -8,6 +8,7 @@ const scl = 30;
 
 function setup() {
   createCanvas(19 * scl, 21 * scl);
+  textSize(30);
   // createCanvas(23 * scl, 25 * scl);
   maze = new Maze();
   pacman = new Pacman(maze);
@@ -19,9 +20,11 @@ function setup() {
  * Rita ut allt på canvas
  */
 function draw() {
-  // background(0);
+  background(0);
   maze.show();
-  // food.show();
+  fill(255);
+  scoreText = pacman.score;
+  text("Score: " + scoreText, scl, scl - 5);
   pacman.update();
   pacman.show();
 }

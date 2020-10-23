@@ -1,5 +1,5 @@
 class Pacman {
-  constructor(maze, food) {
+  constructor(maze) {
     this.gridPos = { x: 9, y: 15 };
     this.pixPos = { x: this.gridPos.x * scl, y: this.gridPos.y * scl };
     this.r = 12;
@@ -8,7 +8,6 @@ class Pacman {
     this.stored_dir = null;
     this.ableToMove = true;
     this.score = 0;
-    this.food = food;
     this.maze = maze;
   }
 
@@ -33,7 +32,7 @@ class Pacman {
     if (this.timeToMove() && this.stored_dir != null) {
       this.direction = this.stored_dir;
       this.ableToMove = this.canMove();
-      // this.checkFood();
+      this.checkFood();
     }
 
     //Sätter grid positionen i förhållande till pixel positionen
@@ -69,10 +68,11 @@ class Pacman {
     return true;
   }
 
+  /**
+   * Kollar om pacman ätit mat,
+   * om så är fallet öka score med 10
+   */
   checkFood() {
-    if (this.food.eatFood(this.gridPos)) {
-      this.score += 10;
-    }
-    console.log(this.score);
+    if (this.maze.eatFood(this.gridPos)) this.score += 10;
   }
 }

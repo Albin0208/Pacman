@@ -1,14 +1,12 @@
 class Food {
   constructor(x, y) {
-    // this.food = food;
-    // this.r = 3;
     this.position = { x: x, y: y };
     this.strokeWeight = (1 / 5) * scl;
     this.type = "normal";
   }
 
   mega() {
-    this.strokeWeight = (1 / 3) * scl;
+    this.strokeWeight = (1 / 2) * scl;
     this.type = "mega";
   }
 
