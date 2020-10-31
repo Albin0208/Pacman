@@ -1,19 +1,16 @@
 let maze, pacman, scoreText;
-// let bg;
 const scl = 30;
-
-// function preload() {
-//   bg = loadImage("/img/background.png");
-// }
+let cols = 19;
+let rows = 21;
 
 function setup() {
-  createCanvas(19 * scl, 21 * scl);
+  createCanvas(cols * scl, rows * scl);
   textSize(30);
-  // createCanvas(23 * scl, 25 * scl);
   maze = new Maze();
   pacman = new Pacman(maze);
-  maze.initializeFood();
-  // image(bg, 0, 0, width, height);
+  enemy = new Ghosts(pacman.gridPos, maze);
+  maze.initGame();
+  maze.initializePacdots();
 }
 
 /**
@@ -24,9 +21,11 @@ function draw() {
   maze.show();
   fill(255);
   scoreText = pacman.score;
-  text("Score: " + scoreText, scl, scl - 5);
+  text("Score: " + scoreText, scl + 4, scl - 5);
   pacman.update();
   pacman.show();
+  enemy.update();
+  enemy.show();
 }
 
 /**

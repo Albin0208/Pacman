@@ -17,11 +17,16 @@ class Pacman {
   show() {
     fill(255, 255, 0);
     circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
+    // push();
     // noFill();
     // stroke(255, 0, 0);
     // rect(this.gridPos.x * scl, this.gridPos.y * scl, scl);
+    // pop();
   }
 
+  /**
+   * Uppdatera pacmans position
+   */
   update() {
     //Om man kan flytta, gör det i riktiningen och med en viss hastighet
     if (this.ableToMove) {
@@ -31,8 +36,12 @@ class Pacman {
 
     if (this.timeToMove() && this.stored_dir != null) {
       this.direction = this.stored_dir;
-      this.ableToMove = this.canMove();
-      this.checkFood();
+      this.ableToMove = this.maze.checkWallCollision(
+        this.gridPos,
+        this.direction
+      );
+      this.checkPacDots();
+      this.checkPortal();
     }
 
     //Sätter grid positionen i förhållande till pixel positionen
@@ -40,39 +49,49 @@ class Pacman {
     this.gridPos.y = floor((this.pixPos.y + scl / 2) / scl);
   }
 
+  /**
+   * Sätt vilken riktning pacman ska ta när han kan svänga
+   *
+   * @param {int} xdir riktiningen i x-led
+   * @param {int} ydir riktiningen i y-led
+   */
   move(xdir, ydir) {
     this.stored_dir = { x: xdir, y: ydir };
   }
 
   /**
-   * Kolla om den är i mitten av rutan
-   * @returns Om den är i mitten av rutan
+   * Kolla om pacman är i mitten av rutan
+   * @returns Om pacman är i mitten av rutan
    */
   timeToMove() {
-    if (this.pixPos.x % scl == 0 && this.direction.y == 0) return true;
-    if (this.pixPos.y % scl == 0 && this.direction.x == 0) return true;
-    return false;
-  }
-
-  /**
-   * Koll om det går att flytta till nästa ruta i rutnätet
-   * @return Om det går att flytta sig till rutan
-   */
-  canMove() {
-    if (
-      this.maze.grid[this.gridPos.y + this.direction.y][
-        this.gridPos.x + this.direction.x
-      ] == 0
-    )
-      return false;
-    return true;
+    return (this.pixPos.x % scl == 0 && this.direction.y == 0) ||
+      (this.pixPos.y % scl == 0 && this.direction.x == 0)
+      ? true
+      : false;
   }
 
   /**
    * Kollar om pacman ätit mat,
    * om så är fallet öka score med 10
    */
-  checkFood() {
-    if (this.maze.eatFood(this.gridPos)) this.score += 10;
+  checkPacDots() {
+    if (this.maze.eatPacdot(this.gridPos)) this.score += 10;
+  }
+
+  /**
+   * Kolla om pacman är vid en portal,
+   * om så är fallet flytta pacman till andra sidan
+   */
+  checkPortal() {
+    if (this.gridPos.y == 9) {
+      if (this.gridPos.x < 0) {
+        this.gridPos.x = 19;
+        this.stored_dir.x = -1;
+      } else if (this.gridPos.x > 18) {
+        this.gridPos.x = -1;
+        this.stored_dir.x = 1;
+      }
+      this.pixPos.x = this.gridPos.x * scl;
+    }
   }
 }

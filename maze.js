@@ -23,62 +23,142 @@ class Maze {
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
-    this.food = [];
-  }
-
-  show() {
-    for (var i = 0; i < this.grid.length; i++) {
-      for (var j = 0; j < this.grid[i].length + 1; j++) {
-        if (this.grid[i][j] == 0) {
-          fill(0, 0, 255);
-          rect(j * scl, i * scl, scl);
-        }
-        if (this.grid[i][j] == 3) {
-          fill(255);
-          rect(j * scl, i * scl + 10, scl, scl / 3);
-        }
-        // noFill();
-        // noStroke();
-        // stroke(255);
-        // rect(j * scl, i * scl, scl);
-      }
-    }
-
-    this.food.forEach((food) => {
-      food.show();
-    });
-  }
-
-  initializeFood() {
-    for (var i = 0; i < this.grid.length; i++) {
-      for (var j = 0; j < this.grid[i].length; j++) {
-        if (this.grid[i][j] == 1) this.food.push(new Food(j, i));
-        if (this.grid[i][j] == 4) {
-          this.food.push(new Food(j, i));
-          this.food[this.food.length - 1].mega();
-        }
-      }
-    }
+    this.pacdots = [];
+    this.map = [];
   }
 
   /**
-   * Kollar om pacman är i kontakt med mat,
-   * om så är fallet ta bort maten ur arrayen
+   * Rita ut mazen
+   */
+  show() {
+    // for (var i = 0; i < this.grid.length; i++) {
+    //   for (var j = 0; j < this.grid[i].length + 1; j++) {
+    //     if (this.grid[i][j] == 0) {
+    //       fill(0, 0, 255);
+    //       rect(j * scl, i * scl, scl);
+    //     }
+    //     if (this.grid[i][j] == 3) {
+    //       fill(255);
+    //       rect(j * scl, i * scl + 10, scl, scl / 3);
+    //     }
+    //     // push();
+    //     // noFill();
+    //     // noStroke();
+    //     // stroke(255);
+    //     // rect(j * scl, i * scl, scl);
+    //     // pop();
+    //   }
+    // }
+    this.map.forEach((row) => {
+      row.forEach((node) => {
+        node.show();
+      });
+    });
+    //Iterera över all mata pacdots och rita ut dem
+    this.pacdots.forEach((pacdot) => {
+      pacdot.show();
+    });
+  }
+
+  /**
+   * Lägg till all mat i en lista
+   */
+  initializePacdots() {
+    // for (var i = 0; i < this.grid.length; i++) {
+    //   for (var j = 0; j < this.grid[i].length; j++) {
+    //     if (this.grid[i][j] == 1) this.pacdots.push(new PacDots(j, i));
+    //     if (this.grid[i][j] == 4) {
+    //       this.pacdots.push(new PacDots(j, i));
+    //       this.pacdots[this.pacdots.length - 1].mega();
+    //     }
+    //   }
+    // }
+    this.map.forEach((row) => {
+      row.forEach((node) => {
+        if (node.type == "path" || node.type == "powerPill") {
+          this.pacdots.push(new PacDot(node.position));
+          if (node.type == "powerPill") {
+            this.pacdots[this.pacdots.length - 1].mega();
+          }
+        }
+      });
+    });
+  }
+
+  /**
+   * Kollar om pacman är i kontakt med en pacdot,
+   * om så är fallet ta bort pacdoten ur arrayen
    *
    * @param {object} gridPos Pacmans position
-   * @returns {bool} Om pacman har ätit mat
+   * @returns {bool} Om pacman har ätit en pacdot
    */
-  eatFood(gridPos) {
-    for (let i = 0; i < this.food.length; i++) {
+  eatPacdot(gridPos) {
+    for (let i = 0; i < this.pacdots.length; i++) {
       if (
-        this.food[i].position.x == gridPos.x &&
-        this.food[i].position.y == gridPos.y
+        this.pacdots[i].position.x == gridPos.x &&
+        this.pacdots[i].position.y == gridPos.y
       ) {
-        // console.log(this.food[i].position.x, this.food[i].position.y);
-        this.food.splice(i, 1);
+        // Ta bort maten från arrayen
+        this.pacdots.splice(i, 1);
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Koll om det går att flytta till nästa ruta i rutnätet
+   *
+   * @param {object} gridPos Positionen i rutnätet
+   * @param {object} direction Riktningen på spelaren
+   * @return Om det går att flytta sig till ruta
+   */
+  checkWallCollision(gridPos, direction) {
+    return this.grid[gridPos.y + direction.y][gridPos.x + direction.x] == 0
+      ? false
+      : true;
+  }
+
+  initGame() {
+    for (var i = 0; i < this.grid.length; i++) {
+      this.map[i] = [];
+      for (var j = 0; j < this.grid[i].length + 1; j++) {
+        switch (this.grid[i][j]) {
+          case 0:
+            this.map[i].push(new Node(j, i, "wall"));
+            break;
+
+          case 1:
+            this.map[i].push(new Node(j, i, "path"));
+            break;
+
+          case 2:
+            this.map[i].push(new Node(j, i, "playersPos"));
+            break;
+
+          case 3:
+            this.map[i].push(new Node(j, i, "gate"));
+            break;
+
+          case 4:
+            this.map[i].push(new Node(j, i, "powerPill"));
+            break;
+
+          case 5:
+            this.map[i].push(new Node(j, i, "void"));
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+    this.map.forEach((row) => {
+      row.forEach((node) => {
+        node.update_neighbours(this.map);
+      });
+    });
+
+    console.log(this.map);
   }
 }
