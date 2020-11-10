@@ -31,24 +31,6 @@ class Maze {
    * Rita ut mazen
    */
   show() {
-    // for (var i = 0; i < this.grid.length; i++) {
-    //   for (var j = 0; j < this.grid[i].length + 1; j++) {
-    //     if (this.grid[i][j] == 0) {
-    //       fill(0, 0, 255);
-    //       rect(j * scl, i * scl, scl);
-    //     }
-    //     if (this.grid[i][j] == 3) {
-    //       fill(255);
-    //       rect(j * scl, i * scl + 10, scl, scl / 3);
-    //     }
-    //     // push();
-    //     // noFill();
-    //     // noStroke();
-    //     // stroke(255);
-    //     // rect(j * scl, i * scl, scl);
-    //     // pop();
-    //   }
-    // }
     this.map.forEach((row) => {
       row.forEach((node) => {
         node.show();
@@ -64,15 +46,6 @@ class Maze {
    * Lägg till all mat i en lista
    */
   initializePacdots() {
-    // for (var i = 0; i < this.grid.length; i++) {
-    //   for (var j = 0; j < this.grid[i].length; j++) {
-    //     if (this.grid[i][j] == 1) this.pacdots.push(new PacDots(j, i));
-    //     if (this.grid[i][j] == 4) {
-    //       this.pacdots.push(new PacDots(j, i));
-    //       this.pacdots[this.pacdots.length - 1].mega();
-    //     }
-    //   }
-    // }
     this.map.forEach((row) => {
       row.forEach((node) => {
         if (node.type == "path" || node.type == "powerPill") {
@@ -158,7 +131,5 @@ class Maze {
         node.update_neighbours(this.map);
       });
     });
-
-    console.log(this.map);
   }
 }

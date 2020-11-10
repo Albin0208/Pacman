@@ -9,11 +9,23 @@ class Ghosts {
     this.color = "red";
     this.r = 12;
     this.maze = maze;
+    this.bestPath;
+    // this.setPath();
   }
 
   show() {
     fill(this.color);
     circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
+
+    console.log(this.bestPath);
+    if (this.bestPath)
+      this.bestPath.forEach((node) => {
+        circle(
+          node.position.x * scl + scl / 2,
+          node.position.y * scl + scl / 2,
+          12
+        );
+      });
   }
 
   update() {
@@ -22,17 +34,18 @@ class Ghosts {
       this.pixPos.y += this.direction.y * this.speed;
     }
     if (this.timeToMove()) {
-      console.log("hola");
       this.move();
     }
 
     //Sätter grid positionen i förhållande till pixel positionen
     this.gridPos.x = floor((this.pixPos.x + scl / 2) / scl);
     this.gridPos.y = floor((this.pixPos.y + scl / 2) / scl);
+
+    this.setPath();
   }
 
   move() {
-    this.setRandomDir();
+    // this.setRandomDir();
   }
 
   setRandomDir() {
@@ -73,5 +86,16 @@ class Ghosts {
       (this.pixPos.y % scl == 0 && this.direction.x == 0)
       ? true
       : false;
+  }
+
+  setPath() {
+    var start = this.gridPos;
+    var end = this.targetPos;
+    // console.log(this.maze.map);
+    // console.log(start, end);
+    var pathSearch = new Astar(start, end, this.maze.map);
+    var temp = pathSearch.astar();
+    // console.log(temp);
+    this.bestPath = temp;
   }
 }

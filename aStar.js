@@ -5,7 +5,8 @@ class Astar {
     this.start = start;
     this.end = end;
     this.map = map;
-    this.astar();
+    // console.log(this.map);
+    // this.astar();
   }
 
   pathTo(node) {
@@ -15,32 +16,35 @@ class Astar {
       path.unshift(curr);
       curr = curr.camefrom;
     }
+    // console.log(path);
     return path;
   }
 
-  // getHeap() {
-  //   return new BinaryHeap(function (node) {
-  //     return node.f;
-  //   });
-  // }
-
   astar() {
-    this.openSet.push(this.start);
+    this.openSet.push(this.map[this.start.x][this.start.y]);
 
+    // console.log(this.openSet);
     while (this.openSet.length > 0) {
       var lowIndex = 0;
       //Hitta den node med minsta f värdet
-      for (let i = 0; i < openSet.length; i++) {
+      for (let i = 0; i < this.openSet.length; i++) {
         if (this.openSet[i].f < this.openSet[lowIndex].f) lowIndex = i;
       }
 
+      // console.log(this.openSet[lowIndex]);
       var current = this.openSet[lowIndex];
 
-      if (current == this.end) {
+      // console.log(current.position, this.end);
+      if (
+        current.position.x == this.end.x &&
+        current.position.y == this.end.y
+      ) {
+        console.log("Best path found");
         return this.pathTo(current);
       }
 
-      removeFromArray(this.openSet, current);
+      // console.log(this.openSet, current);
+      this.removeFromArray(this.openSet, current);
       this.closedSet.push(current);
 
       var neighbours = current.neighbours;
@@ -48,38 +52,61 @@ class Astar {
         var neighbour = neighbours[i];
 
         if (!this.closedSet.includes(neighbour)) {
-          var tempG = current.g + this.distance(neighbour, current);
+          var gScore = current.g + 1;
+          var gScoreIsBest = false;
+          // console.log(neighbour);
+          if (!this.openSet.includes(neighbour)) {
+            gScoreIsBest = true;
+            neighbour.h = this.manhattanDistance(neighbour.position, this.end);
+            this.openSet.push(neighbour);
+          } else if (gScore < neighbour.g) {
+            gScoreIsBest = true;
+          }
 
-          var newPath = false;
-          if (this.openSet.includes(neighbour)) {
-            if (tempG < neighbour.g) {
-              neighbour.g = tempG;
-              newPath = true;
-            } else {
-              neighbour.g = tempG;
-              newPath = true;
-              this.openSet.push(neighbour);
-            }
-
-            if (newPath) {
-              neighbour.h = this.distance(neighbour, end);
-              neighbour.f = neighbour.g + neighbour.h;
-              neighbour.camefrom = current;
-            }
+          if (gScoreIsBest) {
+            neighbour.camefrom = current;
+            neighbour.g = gScore;
+            neighbour.f = neighbour.g + neighbour.h;
+            // console.log(
+            //   "F: " + neighbour.f + " G: " + neighbour.g + " H: " + neighbour.h
+            // );
           }
         }
+
+        // if (!this.closedSet.includes(neighbour)) {
+        //   var tempG = current.g + this.manhattanDistance(neighbour, current);
+
+        //   var newPath = false;
+        //   if (this.openSet.includes(neighbour)) {
+        //     if (tempG < neighbour.g) {
+        //       neighbour.g = tempG;
+        //       newPath = true;
+        //     } else {
+        //       neighbour.g = tempG;
+        //       newPath = true;
+        //       this.openSet.push(neighbour);
+        //     }
+
+        //     if (newPath) {
+        //       neighbour.h = this.manhattanDistance(neighbour, end);
+        //       neighbour.f = neighbour.g + neighbour.h;
+        //       neighbour.camefrom = current;
+        //     }
+        // }
+        // }
       }
     }
   }
 
   removeFromArray(arr, elt) {
-    for (let i = arr.length; index >= 0; i--) {
+    // console.log(elt);
+    for (let i = arr.length; i >= 0; i--) {
       if (arr[i] == elt) arr.splice(i, 1);
     }
   }
 
-  distance(a, b) {
-    var d = abs(a.position.x - b.position.x) + abs(a.position.y - b.position.y);
+  manhattanDistance(a, b) {
+    var d = abs(a.x - b.x) + abs(a.y - b.y);
     return d;
   }
 }
