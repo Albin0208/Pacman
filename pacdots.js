@@ -1,7 +1,6 @@
 class PacDot {
-  constructor(position, x, y) {
+  constructor(position) {
     this.position = position;
-    // this.position = { x: x, y: y };
     this.strokeWeight = (1 / 5) * scl;
     this.type = "normal";
   }

@@ -87,9 +87,11 @@ class Maze {
    * @return Om det går att flytta sig till ruta
    */
   checkWallCollision(gridPos, direction) {
-    return this.grid[gridPos.y + direction.y][gridPos.x + direction.x] == 0
-      ? false
-      : true;
+    if (gridPos.x < 18 && gridPos.x > 0) {
+      var type = this.map[gridPos.y + direction.y][gridPos.x + direction.x]
+        .type;
+      return type != "wall" && type != "gate";
+    } else return true;
   }
 
   initGame() {

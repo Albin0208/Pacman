@@ -17,11 +17,6 @@ class Pacman {
   show() {
     fill(255, 255, 0);
     circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
-    // push();
-    // noFill();
-    // stroke(255, 0, 0);
-    // rect(this.gridPos.x * scl, this.gridPos.y * scl, scl);
-    // pop();
   }
 
   /**
@@ -64,10 +59,10 @@ class Pacman {
    * @returns Om pacman är i mitten av rutan
    */
   timeToMove() {
-    return (this.pixPos.x % scl == 0 && this.direction.y == 0) ||
+    return (
+      (this.pixPos.x % scl == 0 && this.direction.y == 0) ||
       (this.pixPos.y % scl == 0 && this.direction.x == 0)
-      ? true
-      : false;
+    );
   }
 
   /**

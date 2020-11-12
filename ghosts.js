@@ -10,20 +10,19 @@ class Ghosts {
     this.r = 12;
     this.maze = maze;
     this.bestPath;
-    // this.setPath();
+    this.pathSearch = new Astar(this.maze.map);
   }
 
   show() {
     fill(this.color);
     circle(this.pixPos.x + scl / 2, this.pixPos.y + scl / 2, this.r * 2);
 
-    console.log(this.bestPath);
     if (this.bestPath)
       this.bestPath.forEach((node) => {
         circle(
           node.position.x * scl + scl / 2,
           node.position.y * scl + scl / 2,
-          12
+          6
         );
       });
   }
@@ -40,12 +39,12 @@ class Ghosts {
     //Sätter grid positionen i förhållande till pixel positionen
     this.gridPos.x = floor((this.pixPos.x + scl / 2) / scl);
     this.gridPos.y = floor((this.pixPos.y + scl / 2) / scl);
-
-    this.setPath();
   }
 
   move() {
     // this.setRandomDir();
+    this.setPath();
+    this.setDir();
   }
 
   setRandomDir() {
@@ -76,26 +75,28 @@ class Ghosts {
     }
   }
 
+  setDir() {
+    console.log(this.bestPath[0].position);
+    this.direction.x = this.bestPath[0].position.x - this.gridPos.x;
+    this.direction.y = this.bestPath[0].position.y - this.gridPos.y;
+  }
+
   setSpeed() {
     if (this.mode == "chase") this.speed = 2;
     else this.speed = 1;
   }
 
   timeToMove() {
-    return (this.pixPos.x % scl == 0 && this.direction.y == 0) ||
+    return (
+      (this.pixPos.x % scl == 0 && this.direction.y == 0) ||
       (this.pixPos.y % scl == 0 && this.direction.x == 0)
-      ? true
-      : false;
+    );
   }
 
   setPath() {
-    var start = this.gridPos;
-    var end = this.targetPos;
-    // console.log(this.maze.map);
-    // console.log(start, end);
-    var pathSearch = new Astar(start, end, this.maze.map);
-    var temp = pathSearch.astar();
-    // console.log(temp);
-    this.bestPath = temp;
+    if (this.targetPos) {
+      var temp = this.pathSearch.astar(this.gridPos, this.targetPos);
+      if (temp != null) this.bestPath = temp;
+    }
   }
 }

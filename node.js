@@ -39,21 +39,21 @@ class Node {
       this.position.y < rows - 1 &&
       map[this.position.y + 1][this.position.x].type != "wall"
     )
-      this.neighbours.push(map[this.position.y + 1][this.position.x]); //Down
+      this.neighbours.push(map[this.position.y + 1][this.position.x]); //Ner
     if (
       this.position.y > 0 &&
       map[this.position.y - 1][this.position.x].type != "wall"
     )
-      this.neighbours.push(map[this.position.y - 1][this.position.x]); //Up
+      this.neighbours.push(map[this.position.y - 1][this.position.x]); //Upp
     if (
       this.position.x < cols - 1 &&
       map[this.position.y][this.position.x + 1].type != "wall"
     )
-      this.neighbours.push(map[this.position.y][this.position.x + 1]); //Right
+      this.neighbours.push(map[this.position.y][this.position.x + 1]); //Höger
     if (
       this.position.x > 0 &&
       map[this.position.y][this.position.x - 1].type != "wall"
     )
-      this.neighbours.push(map[this.position.y][this.position.x - 1]); //Left
+      this.neighbours.push(map[this.position.y][this.position.x - 1]); //Vänster
   }
 }
