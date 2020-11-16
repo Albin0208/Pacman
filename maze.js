@@ -43,22 +43,6 @@ class Maze {
   }
 
   /**
-   * Lägg till all mat i en lista
-   */
-  initializePacdots() {
-    this.map.forEach((row) => {
-      row.forEach((node) => {
-        if (node.type == "path" || node.type == "powerPill") {
-          this.pacdots.push(new PacDot(node.position));
-          if (node.type == "powerPill") {
-            this.pacdots[this.pacdots.length - 1].mega();
-          }
-        }
-      });
-    });
-  }
-
-  /**
    * Kollar om pacman är i kontakt med en pacdot,
    * om så är fallet ta bort pacdoten ur arrayen
    *
@@ -71,29 +55,21 @@ class Maze {
         this.pacdots[i].position.x == gridPos.x &&
         this.pacdots[i].position.y == gridPos.y
       ) {
+        var type = this.pacdots[i].type;
+
         // Ta bort maten från arrayen
         this.pacdots.splice(i, 1);
-        return true;
+        return type;
       }
     }
     return false;
   }
 
-  /**
-   * Koll om det går att flytta till nästa ruta i rutnätet
-   *
-   * @param {object} gridPos Positionen i rutnätet
-   * @param {object} direction Riktningen på spelaren
-   * @return Om det går att flytta sig till ruta
-   */
-  checkWallCollision(gridPos, direction) {
-    if (gridPos.x < 18 && gridPos.x > 0) {
-      var type = this.map[gridPos.y + direction.y][gridPos.x + direction.x]
-        .type;
-      return type != "wall" && type != "gate";
-    } else return true;
-  }
+  //#region Initialize Game methods
 
+  /**
+   * Förbered spelet
+   */
   initGame() {
     for (var i = 0; i < this.grid.length; i++) {
       this.map[i] = [];
@@ -133,5 +109,24 @@ class Maze {
         node.update_neighbours(this.map);
       });
     });
+    this.initializePacdots();
   }
+
+  /**
+   * Lägg till all mat i en lista
+   */
+  initializePacdots() {
+    this.map.forEach((row) => {
+      row.forEach((node) => {
+        if (node.type == "path" || node.type == "powerPill") {
+          this.pacdots.push(new PacDot(node.position));
+          if (node.type == "powerPill") {
+            this.pacdots[this.pacdots.length - 1].mega();
+          }
+        }
+      });
+    });
+  }
+
+  //#endregion
 }
