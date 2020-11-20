@@ -1,16 +1,16 @@
 class PacDot {
   constructor(position) {
     this.position = position;
-    this.strokeWeight = (1 / 5) * scl;
-    this.type = "normal";
+    this.strokeWeight = (1 / 5) * SCL;
+    this.type = NORMAL;
   }
 
   /**
-   * Gör den specifika pacdoten till en mega pacdot
+   * Gör den specifika pacdoten till en powerpill pacdot
    */
-  mega() {
-    this.strokeWeight = (1 / 2) * scl;
-    this.type = "mega";
+  powerPill() {
+    this.strokeWeight = (1 / 2) * SCL;
+    this.type = POWERPILL;
   }
 
   /**
@@ -20,7 +20,7 @@ class PacDot {
     push();
     strokeWeight(this.strokeWeight);
     stroke("white");
-    point(this.position.x * scl + scl / 2, this.position.y * scl + scl / 2);
+    point(this.position.x * SCL + SCL / 2, this.position.y * SCL + SCL / 2);
     pop();
   }
 }

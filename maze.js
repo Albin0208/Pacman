@@ -25,6 +25,7 @@ class Maze {
     ];
     this.pacdots = [];
     this.map = [];
+    this.megaEaten = false;
   }
 
   /**
@@ -47,7 +48,7 @@ class Maze {
    * om så är fallet ta bort pacdoten ur arrayen
    *
    * @param {object} gridPos Pacmans position
-   * @returns {bool} Om pacman har ätit en pacdot
+   * @returns {boolean} Om pacman har ätit en pacdot
    */
   eatPacdot(gridPos) {
     for (let i = 0; i < this.pacdots.length; i++) {
@@ -76,11 +77,11 @@ class Maze {
       for (var j = 0; j < this.grid[i].length + 1; j++) {
         switch (this.grid[i][j]) {
           case 0:
-            this.map[i].push(new Node(j, i, "wall"));
+            this.map[i].push(new Node(j, i, WALL));
             break;
 
           case 1:
-            this.map[i].push(new Node(j, i, "path"));
+            this.map[i].push(new Node(j, i, PATH));
             break;
 
           case 2:
@@ -88,11 +89,11 @@ class Maze {
             break;
 
           case 3:
-            this.map[i].push(new Node(j, i, "gate"));
+            this.map[i].push(new Node(j, i, GATE));
             break;
 
           case 4:
-            this.map[i].push(new Node(j, i, "powerPill"));
+            this.map[i].push(new Node(j, i, POWERPILL));
             break;
 
           case 5:
@@ -118,10 +119,10 @@ class Maze {
   initializePacdots() {
     this.map.forEach((row) => {
       row.forEach((node) => {
-        if (node.type == "path" || node.type == "powerPill") {
+        if (node.type == PATH || node.type == POWERPILL) {
           this.pacdots.push(new PacDot(node.position));
-          if (node.type == "powerPill") {
-            this.pacdots[this.pacdots.length - 1].mega();
+          if (node.type == POWERPILL) {
+            this.pacdots[this.pacdots.length - 1].powerPill();
           }
         }
       });

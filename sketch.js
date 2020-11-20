@@ -1,14 +1,23 @@
 let maze, pacman, scoreText;
-const scl = 30;
 let gameOver = false;
-let cols = 19;
-let rows = 21;
+const CHASE = "chase";
+const SCATTER = "scatter";
+const SCARED = "scared";
+const EATEN = "eaten";
+const WALL = "wall";
+const GATE = "gate";
+const PATH = "path";
+const POWERPILL = "powerPill";
+const NORMAL = "normal";
+const SCL = 30;
+const COLS = 19;
+const ROWS = 21;
 
 /**
  * Ladda in spelet
  */
 function setup() {
-  createCanvas(cols * scl, rows * scl);
+  createCanvas(COLS * SCL, ROWS * SCL);
   textSize(30);
   maze = new Maze();
   pacman = new Pacman();
@@ -28,11 +37,10 @@ function draw() {
     background(0);
     maze.show();
     fill(255);
-    scoreText = pacman.score;
-    text("Score: " + scoreText, scl + 4, scl - 5);
+    text("Score: " + pacman.score, SCL + 4, SCL - 5);
     pacman.update();
-    pacman.show();
     enemy.update();
+    pacman.show();
     enemy.show();
   }
 }
@@ -42,7 +50,7 @@ function draw() {
  * isåfall sätt riktningen för pacman enligt knappen
  */
 function keyTyped() {
-  //Gör om key till små bokstäver om man av misstag tryckt på capslock
+  //Gör om key till små bokstäver så att det går att spela även med capslock på
   switch (key.toLowerCase()) {
     case "a":
       pacman.setDir(-1, 0);
@@ -58,9 +66,6 @@ function keyTyped() {
 
     case "s":
       pacman.setDir(0, 1);
-      break;
-
-    default:
       break;
   }
 }

@@ -1,8 +1,7 @@
 class Pacman extends PlayerObject {
   constructor() {
-    super({ x: 9, y: 15 }, 2, "yellow");
+    super({ x: 9, y: 15 }, 3, "yellow");
     this.stored_dir = null;
-    this.ableToMove = true;
     this.score = 0;
   }
 
@@ -14,12 +13,9 @@ class Pacman extends PlayerObject {
     if (this.ableToMove) {
       this.move();
     }
-    if (
-      this.timeToMove(this.pixPos, this.direction) &&
-      this.stored_dir != null
-    ) {
+    if (this.timeToMove() && this.stored_dir != null) {
       this.direction = this.stored_dir;
-      this.ableToMove = this.checkWallCollision(this.gridPos, this.direction);
+      this.ableToMove = this.checkWallCollision();
       this.checkPacDots();
       this.checkPortal();
     }
@@ -30,8 +26,8 @@ class Pacman extends PlayerObject {
   /**
    * Sätt vilken riktning pacman ska ta när han kan svänga
    *
-   * @param {int} xdir riktiningen i x-led
-   * @param {int} ydir riktiningen i y-led
+   * @param {number} xdir riktiningen i x-led
+   * @param {number} ydir riktiningen i y-led
    */
   setDir(xdir, ydir) {
     this.stored_dir = { x: xdir, y: ydir };
@@ -44,11 +40,12 @@ class Pacman extends PlayerObject {
     var pacDotType = this.maze.eatPacdot(this.gridPos);
 
     if (pacDotType)
-      if (pacDotType == "normal") {
+      if (pacDotType == NORMAL) {
         this.score += 10;
-      } else if (pacDotType == "mega") {
+      } else if (pacDotType == POWERPILL) {
         this.score += 50;
         //TODO Gör spökerna rädda
+        this.maze.megaEaten = true;
       }
     pacDotType = null;
   }
@@ -66,23 +63,11 @@ class Pacman extends PlayerObject {
         this.gridPos.x = -1;
         this.stored_dir.x = 1;
       }
-      this.pixPos.x = this.gridPos.x * scl;
+      this.pixPos.x = this.gridPos.x * SCL;
     }
   }
 
-  /**
-   * Koll om det går att flytta till nästa ruta i rutnätet
-   *
-   * @param {object} gridPos Positionen i rutnätet
-   * @param {object} direction Riktningen på spelaren
-   * @return {bool} Om det går att flytta sig till rutan
-   */
-  checkWallCollision(gridPos, direction) {
-    if (gridPos.x < 18 && gridPos.x > 0) {
-      var type = this.maze.map[gridPos.y + direction.y][gridPos.x + direction.x]
-        .type;
-      return type != "wall" && type != "gate";
-    }
-    return true;
+  checkValidGridPosistion(type) {
+    return type != WALL && type != GATE;
   }
 }

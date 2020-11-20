@@ -14,17 +14,14 @@ class Node {
    */
   show() {
     switch (this.type) {
-      case "wall":
+      case WALL:
         fill(0, 0, 255);
-        rect(this.position.x * scl, this.position.y * scl, scl);
+        rect(this.position.x * SCL, this.position.y * SCL, SCL);
         break;
 
-      case "gate":
+      case GATE:
         fill(255);
-        rect(this.position.x * scl, this.position.y * scl + 10, scl, scl / 3);
-        break;
-
-      default:
+        rect(this.position.x * SCL, this.position.y * SCL + 10, SCL, SCL / 3);
         break;
     }
   }
@@ -36,23 +33,23 @@ class Node {
    */
   update_neighbours(map) {
     if (
-      this.position.y < rows - 1 &&
-      map[this.position.y + 1][this.position.x].type != "wall"
+      this.position.y < ROWS - 1 &&
+      map[this.position.y + 1][this.position.x].type != WALL
     )
       this.neighbours.push(map[this.position.y + 1][this.position.x]); //Ner
     if (
       this.position.y > 0 &&
-      map[this.position.y - 1][this.position.x].type != "wall"
+      map[this.position.y - 1][this.position.x].type != WALL
     )
       this.neighbours.push(map[this.position.y - 1][this.position.x]); //Upp
     if (
-      this.position.x < cols - 1 &&
-      map[this.position.y][this.position.x + 1].type != "wall"
+      this.position.x < COLS - 1 &&
+      map[this.position.y][this.position.x + 1].type != WALL
     )
       this.neighbours.push(map[this.position.y][this.position.x + 1]); //Höger
     if (
       this.position.x > 0 &&
-      map[this.position.y][this.position.x - 1].type != "wall"
+      map[this.position.y][this.position.x - 1].type != WALL
     )
       this.neighbours.push(map[this.position.y][this.position.x - 1]); //Vänster
   }

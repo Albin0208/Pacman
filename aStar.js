@@ -95,7 +95,7 @@ class Astar {
    *
    * @param {object} a startpunkt
    * @param {object} b slutpunkt
-   * @returns {int} Distansen mellan två punkter
+   * @returns {number} Distansen mellan två punkter
    */
   manhattanDistance(a, b) {
     var d = abs(a.x - b.x) + abs(a.y - b.y);
