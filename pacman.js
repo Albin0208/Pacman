@@ -1,6 +1,6 @@
 class Pacman extends PlayerObject {
   constructor() {
-    super({ x: 9, y: 15 }, 3, "yellow");
+    super({ x: 9, y: 15 }, PACMANSPEED, "yellow");
     this.stored_dir = null;
     this.score = 0;
   }
@@ -19,7 +19,6 @@ class Pacman extends PlayerObject {
       this.checkPacDots();
       this.checkPortal();
     }
-
     this.setGridPos();
   }
 

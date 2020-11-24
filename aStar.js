@@ -17,6 +17,7 @@ class Astar {
       path.unshift(curr);
       var temp = curr.camefrom;
       curr.camefrom = null;
+      curr.f = 0;
       curr = temp;
     }
     return path;
@@ -28,10 +29,14 @@ class Astar {
    * @param {object} start startpunkten
    * @param {object} end slutpunkten
    */
-  astar(start, end) {
+  astar(start, end, direction) {
     var openSet = [];
     var closedSet = [];
     openSet.push(this.map[start.y][start.x]);
+    //Se till så att spöket bara kan gå i den riktning det färdas i
+    closedSet.push(this.map[start.y - direction.y][start.x - direction.x]);
+
+    var first = true;
 
     while (openSet.length > 0) {
       var lowIndex = 0;
@@ -51,10 +56,12 @@ class Astar {
       closedSet.push(current);
 
       var neighbours = current.neighbours;
+      //Gå igenom nodes grannar
       for (let i = 0; i < neighbours.length; i++) {
         var neighbour = neighbours[i];
 
-        if (!closedSet.includes(neighbour)) {
+        //Om vi inte besökt den noden tidigare och den inte är en vägg
+        if (!closedSet.includes(neighbour) && neighbour.type != WALL) {
           var gScore = current.g + 1;
           var gScoreIsBest = false;
           if (!openSet.includes(neighbour)) {
@@ -65,6 +72,7 @@ class Astar {
             gScoreIsBest = true;
           }
 
+          //Bästa g poängen hittad
           if (gScoreIsBest) {
             neighbour.camefrom = current;
             neighbour.g = gScore;
@@ -72,7 +80,16 @@ class Astar {
           }
         }
       }
+
+      /*Första loopen ta bort första värdet i,
+       *listan med besökta noders
+       */
+      if (first) {
+        closedSet.shift();
+        first = false;
+      }
     }
+    console.log("fel");
   }
 
   /**

@@ -1,26 +1,37 @@
 class Ghosts extends PlayerObject {
-  constructor(pacPos, map) {
+  constructor(pacPos, scatterPos) {
     super({ x: 9, y: 9 }, 2, "red");
     this.pacPos = pacPos;
     this.targetPos = pacPos;
     this.behaviour = CHASE;
-    this.pathSearch = new Astar(map);
+    this.pathSearch = new Astar(this.maze.map);
     this.bestPath;
     this.vurnable = false;
-    this.goHome = false;
+    // this.scatterPos = this.scatterPos;
+    // this.scatterPos = { x: 17, y: 1 };
+    // this.scatterPos = { x: 17, y: 19 };
+    // this.scatterPos = { x: 1, y: 19 };
+    this.scatterPos = { x: 1, y: 1 };
   }
 
   /**
    * Uppdatera spökets info
    */
   update() {
+    // this.setBehaviour(SCATTER);
     if (this.behaviour != EATEN) {
       if (this.maze.megaEaten) {
         this.setBehaviour(SCARED);
+      } else {
+        this.setBehaviour(CHASE);
       }
-      if (!this.maze.megaEaten && this.checkPacmanCollision()) gameOver = true;
-      else if (this.vurnable && this.checkPacmanCollision())
-        this.setBehaviour(EATEN);
+      if (this.checkPacmanCollision()) {
+        if (this.vurnable) {
+          this.setBehaviour(EATEN);
+        } else {
+          gameOver = true;
+        }
+      }
     }
     if (this.ableToMove) this.move();
 
@@ -47,7 +58,11 @@ class Ghosts extends PlayerObject {
    */
   setPath() {
     if (this.targetPos) {
-      var temp = this.pathSearch.astar(this.gridPos, this.targetPos);
+      var temp = this.pathSearch.astar(
+        this.gridPos,
+        this.targetPos,
+        this.direction
+      );
       if (temp != null) this.bestPath = temp;
     }
   }
@@ -76,29 +91,42 @@ class Ghosts extends PlayerObject {
   setBehaviour(behaviour) {
     switch (behaviour) {
       case SCARED:
-        console.log("target", this.targetPos);
-        console.log("grid", this.gridPos);
         if (
           (this.targetPos.x == this.gridPos.x &&
             this.targetPos.y == this.gridPos.y) ||
           this.targetPos == this.pacPos
         )
           this.targetPos = this.randPos();
-        this.speed = 1;
+        this.speed = SCAREDSPEED;
         this.vurnable = true;
+        //Invertera spöket riktning
+        if (this.behaviour != SCARED) {
+          this.direction.x -= this.direction.x * 2;
+          this.direction.y -= this.direction.y * 2;
+        }
+        this.behaviour = SCARED;
         break;
 
       case CHASE:
+        this.behaviour = CHASE;
+        this.speed = CHASESPEED;
         this.targetPos = this.pacPos;
         break;
 
       case SCATTER:
+        this.behaviour = SCATTER;
+        this.speed = SCATTERSPEED;
+        this.gridPos.x == this.scatterPos.x &&
+        this.gridPos.y == this.scatterPos.y
+          ? (this.targetPos = { x: 9, y: 9 })
+          : (this.targetPos = this.scatterPos);
         break;
 
       case EATEN:
-        this.targetPos = { x: 9, y: 9 };
+        //Se till att spöket är i mitten av rutan
         this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
-        this.speed = 3;
+        this.targetPos = { x: 9, y: 9 };
+        this.speed = EATENSPEED;
         this.behaviour = EATEN;
         this.direction = { x: 0, y: 0 };
         break;
@@ -112,13 +140,11 @@ class Ghosts extends PlayerObject {
    */
   randPos() {
     var xPos, yPos;
-
-    //Ser till så att den nya positionen inte är en vägg
+    //Ser till så att den nya positionen är en väg
     do {
       xPos = floor(random(1, 19));
       yPos = floor(random(1, 21));
-    } while (this.maze.map[yPos][xPos].type == WALL);
-
+    } while (this.maze.map[yPos][xPos].type != PATH);
     return { x: xPos, y: yPos };
   }
 }

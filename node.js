@@ -32,25 +32,13 @@ class Node {
    * @param {array} map Kartan över spelplanen
    */
   update_neighbours(map) {
-    if (
-      this.position.y < ROWS - 1 &&
-      map[this.position.y + 1][this.position.x].type != WALL
-    )
+    if (this.position.y < ROWS - 1)
       this.neighbours.push(map[this.position.y + 1][this.position.x]); //Ner
-    if (
-      this.position.y > 0 &&
-      map[this.position.y - 1][this.position.x].type != WALL
-    )
+    if (this.position.y > 0)
       this.neighbours.push(map[this.position.y - 1][this.position.x]); //Upp
-    if (
-      this.position.x < COLS - 1 &&
-      map[this.position.y][this.position.x + 1].type != WALL
-    )
+    if (this.position.x < COLS - 1)
       this.neighbours.push(map[this.position.y][this.position.x + 1]); //Höger
-    if (
-      this.position.x > 0 &&
-      map[this.position.y][this.position.x - 1].type != WALL
-    )
+    if (this.position.x > 0)
       this.neighbours.push(map[this.position.y][this.position.x - 1]); //Vänster
   }
 }

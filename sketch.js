@@ -1,17 +1,5 @@
 let maze, pacman, scoreText;
 let gameOver = false;
-const CHASE = "chase";
-const SCATTER = "scatter";
-const SCARED = "scared";
-const EATEN = "eaten";
-const WALL = "wall";
-const GATE = "gate";
-const PATH = "path";
-const POWERPILL = "powerPill";
-const NORMAL = "normal";
-const SCL = 30;
-const COLS = 19;
-const ROWS = 21;
 
 /**
  * Ladda in spelet
