@@ -66,12 +66,6 @@ class Maze {
     return false;
   }
 
-  // startTimer() {
-  //   var timer = new Timer(7, this.megaEaten);
-  //   timer.start();
-  //   console.log(this.megaEaten);
-  // }
-
   //#region Initialize Game methods
 
   /**
@@ -91,7 +85,7 @@ class Maze {
             break;
 
           case 2:
-            this.map[i].push(new Node(j, i, "playersPos"));
+            this.map[i].push(new Node(j, i, PACMANPOS));
             break;
 
           case 3:
@@ -103,14 +97,11 @@ class Maze {
             break;
 
           case 5:
-            this.map[i].push(new Node(j, i, "void"));
+            this.map[i].push(new Node(j, i, VOID));
             break;
 
           case 6:
             this.map[i].push(new Node(j, i, GHOSTHOME));
-            break;
-
-          default:
             break;
         }
       }

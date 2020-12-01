@@ -10,7 +10,6 @@ class Timer {
       this.countDownTime--;
       console.log(this.countDownTime);
       if (this.countDownTime <= 0) {
-        // clearInterval(timer);
         this.reset();
         this.maze.megaEaten = false;
       }
