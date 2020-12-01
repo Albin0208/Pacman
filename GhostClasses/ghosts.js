@@ -6,7 +6,7 @@ class Ghosts extends PlayerObject {
     this.behaviour = CHASE;
     this.pathSearch = new Astar(this.maze.map);
     this.bestPath;
-    this.vurnable = false;
+    this.previousBehaviour = this.behaviour;
     // this.scatterPos = this.scatterPos;
     // this.scatterPos = { x: 17, y: 1 };
     // this.scatterPos = { x: 17, y: 19 };
@@ -18,7 +18,6 @@ class Ghosts extends PlayerObject {
    * Uppdatera spökets info
    */
   update() {
-    // this.setBehaviour(SCATTER);
     if (this.behaviour != EATEN) {
       if (this.maze.megaEaten) {
         this.setBehaviour(SCARED);
@@ -26,7 +25,7 @@ class Ghosts extends PlayerObject {
         this.setBehaviour(CHASE);
       }
       if (this.checkPacmanCollision()) {
-        if (this.vurnable) {
+        if (this.maze.megaEaten) {
           this.setBehaviour(EATEN);
         } else {
           gameOver = true;
@@ -98,7 +97,6 @@ class Ghosts extends PlayerObject {
         )
           this.targetPos = this.randPos();
         this.speed = SCAREDSPEED;
-        this.vurnable = true;
         //Invertera spöket riktning
         if (this.behaviour != SCARED) {
           this.direction.x -= this.direction.x * 2;
@@ -108,9 +106,9 @@ class Ghosts extends PlayerObject {
         break;
 
       case CHASE:
+        this.targetPos = this.pacPos;
         this.behaviour = CHASE;
         this.speed = CHASESPEED;
-        this.targetPos = this.pacPos;
         break;
 
       case SCATTER:
@@ -123,14 +121,13 @@ class Ghosts extends PlayerObject {
         break;
 
       case EATEN:
-        //Se till att spöket är i mitten av rutan
-        this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
         this.targetPos = { x: 9, y: 9 };
         this.speed = EATENSPEED;
         this.behaviour = EATEN;
         this.direction = { x: 0, y: 0 };
         break;
     }
+    this.checkPreviousBehaviour();
   }
 
   /**
@@ -146,5 +143,17 @@ class Ghosts extends PlayerObject {
       yPos = floor(random(1, 21));
     } while (this.maze.map[yPos][xPos].type != PATH);
     return { x: xPos, y: yPos };
+  }
+
+  /**
+   * Kolla föregående beteende
+   */
+  checkPreviousBehaviour() {
+    //Om det är ett nytt beteende
+    if (this.previousBehaviour != this.behaviour) {
+      //Se till att spöket är i mitten av rutan
+      this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
+    }
+    this.previousBehaviour = this.behaviour;
   }
 }

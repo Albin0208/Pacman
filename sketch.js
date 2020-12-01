@@ -8,7 +8,8 @@ function setup() {
   createCanvas(COLS * SCL, ROWS * SCL);
   textSize(30);
   maze = new Maze();
-  pacman = new Pacman();
+  timer = new Timer(7, maze);
+  pacman = new Pacman(timer);
   enemy = new Ghosts(pacman.gridPos, maze.map);
   maze.initGame();
 }

@@ -66,6 +66,12 @@ class Maze {
     return false;
   }
 
+  // startTimer() {
+  //   var timer = new Timer(7, this.megaEaten);
+  //   timer.start();
+  //   console.log(this.megaEaten);
+  // }
+
   //#region Initialize Game methods
 
   /**

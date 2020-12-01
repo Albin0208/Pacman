@@ -1,8 +1,9 @@
 class Pacman extends PlayerObject {
-  constructor() {
+  constructor(timer) {
     super({ x: 9, y: 15 }, PACMANSPEED, "yellow");
     this.stored_dir = null;
     this.score = 0;
+    // this.timer = timer;
   }
 
   /**
@@ -42,9 +43,14 @@ class Pacman extends PlayerObject {
       if (pacDotType == NORMAL) {
         this.score += 10;
       } else if (pacDotType == POWERPILL) {
+        var timer = new Timer(7, this.maze);
+        if (this.maze.megaEaten) {
+          timer.reset();
+        }
         this.score += 50;
-        //TODO Gör spökerna rädda
         this.maze.megaEaten = true;
+        // this.maze.startTimer();
+        timer.start();
       }
     pacDotType = null;
   }
