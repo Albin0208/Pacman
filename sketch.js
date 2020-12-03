@@ -1,4 +1,5 @@
-let maze, pacman, scoreText;
+let maze, pacman, inky, blinky, pinky, clyde;
+let score = 0;
 let gameOver = false;
 
 /**
@@ -8,9 +9,8 @@ function setup() {
   createCanvas(COLS * SCL, ROWS * SCL);
   textSize(30);
   maze = new Maze();
-  timer = new Timer(7, maze);
-  pacman = new Pacman(timer);
-  enemy = new Ghosts(pacman.gridPos, maze.map);
+  pacman = new Pacman();
+  enemy = new Ghost(pacman.gridPos, maze.map);
   maze.initGame();
 }
 
@@ -26,7 +26,7 @@ function draw() {
     background(0);
     maze.show();
     fill(255);
-    text("Score: " + pacman.score, SCL + 4, SCL - 5);
+    text("Score: " + score, SCL + 4, SCL - 5);
     pacman.update();
     enemy.update();
     pacman.show();
@@ -57,4 +57,20 @@ function keyTyped() {
       pacman.setDir(0, 1);
       break;
   }
+}
+
+function createGhosts() {}
+
+function updateGhosts() {
+  inky.update();
+  blinky.update();
+  pinky.update();
+  clyde.update();
+}
+
+function showGhosts() {
+  inky.show();
+  blinky.show();
+  pinky.show();
+  clyde.show();
 }

@@ -1,4 +1,4 @@
-class Ghosts extends PlayerObject {
+class Ghost extends PlayerObject {
   constructor(pacPos, scatterPos) {
     super({ x: 9, y: 9 }, 2, "red");
     this.pacPos = pacPos;
@@ -12,12 +12,15 @@ class Ghosts extends PlayerObject {
     // this.scatterPos = { x: 17, y: 19 };
     // this.scatterPos = { x: 1, y: 19 };
     this.scatterPos = { x: 1, y: 1 };
+    this.stayHome = false;
   }
 
   /**
    * Uppdatera spökets info
    */
   update() {
+    if (this.stayHome) return;
+
     if (this.behaviour != EATEN) {
       if (this.maze.megaEaten) {
         this.setBehaviour(SCARED);
@@ -40,6 +43,7 @@ class Ghosts extends PlayerObject {
       this.ableToMove = this.checkWallCollision(this.gridPos, this.direction);
     }
     this.setGridPos();
+    this.returnedHome();
   }
 
   /**
@@ -99,8 +103,8 @@ class Ghosts extends PlayerObject {
         this.speed = SCAREDSPEED;
         //Invertera spöket riktning
         if (this.behaviour != SCARED) {
-          this.direction.x -= this.direction.x * 2;
-          this.direction.y -= this.direction.y * 2;
+          this.direction.x = -this.direction.x;
+          this.direction.y = -this.direction.y;
         }
         this.behaviour = SCARED;
         break;
@@ -155,5 +159,20 @@ class Ghosts extends PlayerObject {
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
     }
     this.previousBehaviour = this.behaviour;
+  }
+
+  returnedHome() {
+    if (
+      this.behaviour == EATEN &&
+      this.maze.map[this.gridPos.y][this.gridPos.x].type == GHOSTHOME
+    ) {
+      this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
+      this.stayHome = true;
+      this.timer.start(4, () => {
+        this.stayHome = false;
+        this.setBehaviour(CHASE);
+        this.direction = { x: 0, y: 0 };
+      });
+    }
   }
 }

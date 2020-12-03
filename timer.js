@@ -1,22 +1,21 @@
 class Timer {
-  constructor(countDownTime, maze) {
-    this.countDownTime = countDownTime;
-    this.maze = maze;
+  constructor() {
     this.timer;
   }
 
-  start() {
-    timer = setInterval(() => {
-      this.countDownTime--;
-      console.log(this.countDownTime);
-      if (this.countDownTime <= 0) {
+  start(countDownTime, func) {
+    this.reset();
+    this.timer = setInterval(() => {
+      countDownTime--;
+      console.log(countDownTime);
+      if (countDownTime <= 0) {
+        func();
         this.reset();
-        this.maze.megaEaten = false;
       }
     }, 1000);
   }
 
   reset() {
-    clearInterval(timer);
+    clearInterval(this.timer);
   }
 }

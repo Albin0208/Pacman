@@ -39,20 +39,15 @@ class Pacman extends PlayerObject {
   checkPacDots() {
     var pacDotType = this.maze.eatPacdot(this.gridPos);
 
-    if (pacDotType)
-      if (pacDotType == NORMAL) {
-        this.score += 10;
-      } else if (pacDotType == POWERPILL) {
-        var timer = new Timer(7, this.maze);
-        if (this.maze.megaEaten) {
-          timer.reset();
-        }
-        this.score += 50;
-        this.maze.megaEaten = true;
-        // this.maze.startTimer();
-        timer.start();
-      }
-    pacDotType = null;
+    if (pacDotType == NORMAL) {
+      score += 10;
+    } else if (pacDotType == POWERPILL) {
+      score += 50;
+      this.maze.megaEaten = true;
+      this.timer.start(7, () => {
+        this.maze.megaEaten = false;
+      });
+    }
   }
 
   /**

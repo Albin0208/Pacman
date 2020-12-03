@@ -8,6 +8,7 @@ class PlayerObject {
     this.speed = speed;
     this.color = color;
     this.ableToMove = true;
+    this.timer = new Timer();
   }
 
   /**
