@@ -1,17 +1,19 @@
 class Ghost extends PlayerObject {
-  constructor(pacPos, scatterPos) {
-    super({ x: 9, y: 9 }, 2, "red");
+  constructor(pacPos, scatterPos, startPos, color, targetPos) {
+    super(startPos, CHASESPEED, color);
     this.pacPos = pacPos;
-    this.targetPos = pacPos;
-    this.behaviour = CHASE;
+    this.targetControll = targetPos;
+    this.targetPos;
+    this.setTarget();
+    this.behaviour = SCATTER;
     this.pathSearch = new Astar(this.maze.map);
     this.bestPath;
     this.previousBehaviour = this.behaviour;
-    // this.scatterPos = this.scatterPos;
+    this.scatterPos = scatterPos;
     // this.scatterPos = { x: 17, y: 1 };
     // this.scatterPos = { x: 17, y: 19 };
     // this.scatterPos = { x: 1, y: 19 };
-    this.scatterPos = { x: 1, y: 1 };
+    // this.scatterPos = { x: 1, y: 1 };
     this.stayHome = false;
   }
 
@@ -21,7 +23,8 @@ class Ghost extends PlayerObject {
   update() {
     if (this.stayHome) return;
 
-    if (this.behaviour != EATEN) {
+    this.setBehaviour(SCATTER);
+    if (this.behaviour != EATEN && 1 == 2) {
       if (this.maze.megaEaten) {
         this.setBehaviour(SCARED);
       } else {
@@ -110,7 +113,8 @@ class Ghost extends PlayerObject {
         break;
 
       case CHASE:
-        this.targetPos = this.pacPos;
+        // this.targetPos = this.pacPos;
+        this.setTarget();
         this.behaviour = CHASE;
         this.speed = CHASESPEED;
         break;
@@ -174,5 +178,9 @@ class Ghost extends PlayerObject {
         this.direction = { x: 0, y: 0 };
       });
     }
+  }
+
+  setTarget() {
+    this.targetPos = this.targetControll;
   }
 }
