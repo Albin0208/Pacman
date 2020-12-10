@@ -27,12 +27,8 @@ class Ghost extends PlayerObject {
         this.setBehaviour(CHASE);
       }
       if (this.checkPacmanCollision()) {
+        //TODO Fixa gameover screen
         this.maze.megaEaten ? this.setBehaviour(EATEN) : gameOver();
-        // if (this.maze.megaEaten) {
-        //   this.setBehaviour(EATEN);
-        // } else {
-        //   gameOver = true;
-        // }
       }
     }
     if (this.ableToMove) this.move();
@@ -60,6 +56,7 @@ class Ghost extends PlayerObject {
    * Använd a* (astar) sökalgoritm för att hitta kortaste vägen till en målpunkt
    */
   setPath() {
+    //TODO Fixa så att a* returnerar en targetposition istället för en array
     if (this.targetPos) {
       var temp = this.pathSearch.astar(
         this.gridPos,
@@ -162,6 +159,9 @@ class Ghost extends PlayerObject {
     this.previousBehaviour = this.behaviour;
   }
 
+  /**
+   * Kolla om spöket har kommit hem
+   */
   returnedHome() {
     if (
       this.behaviour == EATEN &&
@@ -169,6 +169,7 @@ class Ghost extends PlayerObject {
     ) {
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
       this.stayHome = true;
+      //Starta en timer på 4 sekunder
       this.timer.start(4, () => {
         this.stayHome = false;
         this.setBehaviour(CHASE);

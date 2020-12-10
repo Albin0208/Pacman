@@ -1,7 +1,4 @@
-// let maze, pacman, inky, blinky, pinky, clyde;
-// let score = 0;
-// let gameOver = false;
-let runGame = new Main();
+const runGame = new Main();
 
 /**
  * Ladda in spelet
@@ -16,26 +13,9 @@ function setup() {
  * Rita ut allt på canvas
  */
 function draw() {
-  // if (gameOver) {
-  //   fill(255);
-  //   textAlign(CENTER);
-  //   text("Tryck på F5 för att spela igen", width / 2, height / 2);
-  // } else {
   background(0);
   runGame.displayGame();
   runGame.updateGame();
-  //   maze.show();
-  //   fill(255);
-  //   text("Score: " + score, SCL + 4, SCL - 5);
-  //   pacman.update();
-  //   // updateGhosts();
-  //   // enemy.update();
-  //   // blinky.update();
-  //   pacman.show();
-  //   // showGhosts();
-  //   // enemy.show();
-  //   // blinky.show();
-  // }
 }
 
 /**
@@ -61,25 +41,4 @@ function keyTyped() {
       runGame.pacman.setDir(0, 1);
       break;
   }
-}
-
-function createGhosts() {
-  inky = new Inky(pacman.gridPos);
-  blinky = new Blinky(pacman.gridPos);
-  pinky = new Pinky(pacman.gridPos);
-  clyde = new Clyde(pacman.gridPos);
-}
-
-function updateGhosts() {
-  inky.update();
-  blinky.update();
-  pinky.update();
-  clyde.update();
-}
-
-function showGhosts() {
-  inky.show();
-  blinky.show();
-  pinky.show();
-  clyde.show();
 }

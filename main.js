@@ -1,10 +1,12 @@
 class Main {
   constructor() {
     this.maze = new Maze();
-    // this.pacman;
     this.gameOver;
   }
 
+  /**
+   * Starta spelet
+   */
   run() {
     this.maze.initGame();
     this.pacman = new Pacman(this.maze);
@@ -14,6 +16,9 @@ class Main {
     this.clyde = new Clyde(this.pacman.gridPos, this.maze);
   }
 
+  /**
+   * Rita ut alla spelkomponenter
+   */
   displayGame() {
     if (this.gameOver) {
       fill(255);
@@ -31,6 +36,9 @@ class Main {
     }
   }
 
+  /**
+   * Upddatera alla spelkomponenter
+   */
   updateGame() {
     this.pacman.update();
     this.blinky.update();
