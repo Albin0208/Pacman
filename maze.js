@@ -37,7 +37,7 @@ class Maze {
         node.show();
       });
     });
-    //Iterera över all mata pacdots och rita ut dem
+    //Iterera över alla pacdots och rita ut dem
     this.pacdots.forEach((pacdot) => {
       pacdot.show();
     });

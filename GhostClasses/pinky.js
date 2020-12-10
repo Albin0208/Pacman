@@ -1,5 +1,5 @@
 class Pinky extends Ghost {
-  constructor(pacpos) {
-    super(pacpos, PINKYSCATTERPOS, PINKYSTARTPOS, "pink", pacpos);
+  constructor(pacpos, maze) {
+    super(pacpos, PINKYSCATTERPOS, PINKYSTARTPOS, "pink", pacpos, maze);
   }
 }

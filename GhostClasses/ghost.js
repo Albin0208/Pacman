@@ -1,19 +1,15 @@
 class Ghost extends PlayerObject {
-  constructor(pacPos, scatterPos, startPos, color, targetPos) {
-    super(startPos, CHASESPEED, color);
+  constructor(pacPos, scatterPos, startPos, color, targetPos, maze) {
+    super(startPos, CHASESPEED, color, maze, map);
     this.pacPos = pacPos;
     this.targetControll = targetPos;
     this.targetPos;
     this.setTarget();
     this.behaviour = SCATTER;
-    this.pathSearch = new Astar(this.maze.map);
+    this.pathSearch = new Astar(R.clone(this.maze.map)); //R.clone skapar en klon av mappen över spelplanen
     this.bestPath;
     this.previousBehaviour = this.behaviour;
     this.scatterPos = scatterPos;
-    // this.scatterPos = { x: 17, y: 1 };
-    // this.scatterPos = { x: 17, y: 19 };
-    // this.scatterPos = { x: 1, y: 19 };
-    // this.scatterPos = { x: 1, y: 1 };
     this.stayHome = false;
   }
 
@@ -31,11 +27,12 @@ class Ghost extends PlayerObject {
         this.setBehaviour(CHASE);
       }
       if (this.checkPacmanCollision()) {
-        if (this.maze.megaEaten) {
-          this.setBehaviour(EATEN);
-        } else {
-          gameOver = true;
-        }
+        this.maze.megaEaten ? this.setBehaviour(EATEN) : gameOver();
+        // if (this.maze.megaEaten) {
+        //   this.setBehaviour(EATEN);
+        // } else {
+        //   gameOver = true;
+        // }
       }
     }
     if (this.ableToMove) this.move();
@@ -86,7 +83,7 @@ class Ghost extends PlayerObject {
       this.pixPos.x,
       this.pixPos.y
     );
-    return d < this.r * 2 ? true : false;
+    return d < this.r * 2;
   }
 
   /**
@@ -149,7 +146,7 @@ class Ghost extends PlayerObject {
     do {
       xPos = floor(random(1, 19));
       yPos = floor(random(1, 21));
-    } while (this.maze.map[yPos][xPos].type != PATH);
+    } while (this.map[yPos][xPos].type != PATH);
     return { x: xPos, y: yPos };
   }
 
@@ -168,7 +165,7 @@ class Ghost extends PlayerObject {
   returnedHome() {
     if (
       this.behaviour == EATEN &&
-      this.maze.map[this.gridPos.y][this.gridPos.x].type == GHOSTHOME
+      this.map[this.gridPos.y][this.gridPos.x].type == GHOSTHOME
     ) {
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
       this.stayHome = true;

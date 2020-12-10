@@ -1,9 +1,8 @@
 class Pacman extends PlayerObject {
-  constructor(timer) {
-    super({ x: 9, y: 15 }, PACMANSPEED, "yellow");
+  constructor(maze, map) {
+    super({ x: 9, y: 15 }, PACMANSPEED, "yellow", maze, map);
     this.stored_dir = null;
     this.score = 0;
-    // this.timer = timer;
   }
 
   /**
@@ -40,9 +39,9 @@ class Pacman extends PlayerObject {
     var pacDotType = this.maze.eatPacdot(this.gridPos);
 
     if (pacDotType == NORMAL) {
-      score += 10;
+      this.score += 10;
     } else if (pacDotType == POWERPILL) {
-      score += 50;
+      this.score += 50;
       this.maze.megaEaten = true;
       this.timer.start(7, () => {
         this.maze.megaEaten = false;
@@ -69,5 +68,9 @@ class Pacman extends PlayerObject {
 
   checkValidGridPosistion(type) {
     return type != WALL && type != GATE;
+  }
+
+  returnScore() {
+    return this.score > 0 ? this.score : 0;
   }
 }

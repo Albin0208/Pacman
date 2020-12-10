@@ -18,6 +18,7 @@ class Astar {
       var temp = curr.camefrom;
       curr.camefrom = null;
       curr.f = 0;
+      curr.g = 0;
       curr = temp;
     }
     return path;
@@ -63,10 +64,11 @@ class Astar {
         //Om vi inte besökt den noden tidigare och den inte är en vägg
         if (!closedSet.includes(neighbour) && neighbour.type != WALL) {
           var gScore = current.g + 1;
+          var hScore = 0;
           var gScoreIsBest = false;
           if (!openSet.includes(neighbour)) {
             gScoreIsBest = true;
-            neighbour.h = this.manhattanDistance(neighbour.position, end);
+            hScore = this.manhattanDistance(neighbour.position, end);
             openSet.push(neighbour);
           } else if (gScore < neighbour.g) {
             gScoreIsBest = true;
@@ -76,7 +78,7 @@ class Astar {
           if (gScoreIsBest) {
             neighbour.camefrom = current;
             neighbour.g = gScore;
-            neighbour.f = neighbour.g + neighbour.h;
+            neighbour.f = neighbour.g + hScore;
           }
         }
       }

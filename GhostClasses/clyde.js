@@ -1,5 +1,5 @@
 class Clyde extends Ghost {
-  constructor(pacpos) {
-    super(pacpos, CLYDESCATTERPOS, CLYDESTARTPOS, "orange", pacpos);
+  constructor(pacpos, maze) {
+    super(pacpos, CLYDESCATTERPOS, CLYDESTARTPOS, "orange", pacpos, maze);
   }
 }

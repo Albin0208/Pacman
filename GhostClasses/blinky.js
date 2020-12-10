@@ -1,5 +1,5 @@
 class Blinky extends Ghost {
-  constructor(pacpos) {
-    super(pacpos, BLINKYSCATTERPOS, BLINKYSTARTPOS, "red", pacpos);
+  constructor(pacpos, maze) {
+    super(pacpos, BLINKYSCATTERPOS, BLINKYSTARTPOS, "red", pacpos, maze);
   }
 }

@@ -1,5 +1,5 @@
 class PlayerObject {
-  constructor(gridPos, speed, color) {
+  constructor(gridPos, speed, color, maze) {
     this.gridPos = gridPos;
     this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
     this.direction = { x: 0, y: 0 };
