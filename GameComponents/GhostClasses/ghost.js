@@ -1,6 +1,13 @@
 class Ghost extends PlayerObject {
-  constructor(pacPos, scatterPos, startPos, color, targetPos, maze) {
-    super(startPos, CHASESPEED, color, maze, map);
+  // scatterPos, startPos, color
+  constructor(pacPos, ghostProperties, targetPos, maze) {
+    super(
+      ghostProperties.startPos,
+      CHASESPEED,
+      ghostProperties.color,
+      maze,
+      map
+    );
     this.pacPos = pacPos;
     this.targetControll = targetPos;
     this.targetPos;
@@ -9,7 +16,7 @@ class Ghost extends PlayerObject {
     this.pathSearch = new Astar(R.clone(this.maze.map)); //R.clone skapar en klon av mappen över spelplanen
     this.bestPath;
     this.previousBehaviour = this.behaviour;
-    this.scatterPos = scatterPos;
+    this.scatterPos = ghostProperties.scatterPos;
     this.stayHome = false;
   }
 

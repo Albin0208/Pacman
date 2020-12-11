@@ -75,7 +75,20 @@ class PlayerObject {
     return true;
   }
 
+  /**
+   * Kolla om nästa position är en giltig ruta,
+   * som spelaren kan flyttas till
+   *
+   * @param {string} type
+   */
   checkValidGridPosistion(type) {
     return type != WALL;
+  }
+
+  /**
+   * Sätter Gameover
+   */
+  gameOver() {
+    this.maze.gameOver = true;
   }
 }

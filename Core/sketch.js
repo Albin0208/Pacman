@@ -1,4 +1,4 @@
-const runGame = new Main();
+const runGame = new Game();
 
 /**
  * Ladda in spelet

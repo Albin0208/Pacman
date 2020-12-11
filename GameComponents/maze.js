@@ -1,5 +1,5 @@
 class Maze {
-  constructor() {
+  constructor(gameOver) {
     this.grid = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -26,6 +26,7 @@ class Maze {
     this.pacdots = [];
     this.map = [];
     this.megaEaten = false;
+    this.gameOver = gameOver;
   }
 
   /**
@@ -50,7 +51,7 @@ class Maze {
    * @param {object} gridPos Pacmans position
    * @returns {boolean} Om pacman har ätit en pacdot
    */
-  eatPacdot(gridPos) {
+  checkPacdot(gridPos) {
     for (let i = 0; i < this.pacdots.length; i++) {
       if (
         this.pacdots[i].position.x == gridPos.x &&
@@ -131,4 +132,8 @@ class Maze {
   }
 
   //#endregion
+
+  returnGameOver() {
+    return this.gameOver;
+  }
 }

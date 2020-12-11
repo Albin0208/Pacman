@@ -36,7 +36,7 @@ class Pacman extends PlayerObject {
    * Kollar om pacman ätit mat
    */
   checkPacDots() {
-    var pacDotType = this.maze.eatPacdot(this.gridPos);
+    var pacDotType = this.maze.checkPacdot(this.gridPos);
 
     if (pacDotType == NORMAL) {
       this.score += 10;
@@ -66,10 +66,21 @@ class Pacman extends PlayerObject {
     }
   }
 
+  /**
+   * Kolla om nästa position är en giltig ruta,
+   * som pacman kan flyttas till
+   *
+   * @param {string} type
+   */
   checkValidGridPosistion(type) {
     return type != WALL && type != GATE;
   }
 
+  /**
+   * Returnerar hur mycket poäng pacman har
+   *
+   * @returns {number} Pacmans poäng
+   */
   returnScore() {
     return this.score > 0 ? this.score : 0;
   }

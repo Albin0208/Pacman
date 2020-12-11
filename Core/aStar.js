@@ -91,7 +91,8 @@ class Astar {
         first = false;
       }
     }
-    console.log("fel");
+    //Kommer vi hit så har ingen väg hittats
+    console.log("Ingen väg hittad");
   }
 
   /**

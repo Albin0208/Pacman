@@ -7,15 +7,27 @@ const CHASESPEED = 2;
 const SCATTERSPEED = CHASESPEED;
 const SCAREDSPEED = 1;
 const EATENSPEED = 3;
-const BLINKYSCATTERPOS = { x: 1, y: 19 };
-const INKYSCATTERPOS = { x: 17, y: 19 };
-const PINKYSCATTERPOS = { x: 1, y: 1 };
-const CLYDESCATTERPOS = { x: 17, y: 1 };
 
-const BLINKYSTARTPOS = { x: 9, y: 7 };
-const INKYSTARTPOS = { x: 8, y: 9 };
-const PINKYSTARTPOS = { x: 9, y: 9 };
-const CLYDESTARTPOS = { x: 10, y: 9 };
+const BLINKYPROPERTIES = {
+  scatterPos: { x: 1, y: 19 },
+  startPos: { x: 9, y: 7 },
+  color: "red",
+};
+const INKYPROPERTIES = {
+  scatterPos: { x: 17, y: 19 },
+  startPos: { x: 8, y: 9 },
+  color: "aqua",
+};
+const PINKYPROPERTIES = {
+  scatterPos: { x: 1, y: 1 },
+  startPos: { x: 9, y: 9 },
+  color: "pink",
+};
+const CLYDEPROPERTIES = {
+  scatterPos: { x: 17, y: 1 },
+  startPos: { x: 10, y: 9 },
+  color: "orange",
+};
 
 /* Pacman konstanter */
 const PACMANSPEED = 2;
