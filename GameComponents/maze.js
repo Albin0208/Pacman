@@ -1,3 +1,6 @@
+/**
+ * Klass för spelplanen
+ */
 class Maze {
   constructor(gameOver) {
     this.grid = [
@@ -72,7 +75,7 @@ class Maze {
   /**
    * Förbered spelet
    */
-  initGame() {
+  initMaze() {
     for (var i = 0; i < this.grid.length; i++) {
       this.map[i] = [];
       for (var j = 0; j < this.grid[i].length + 1; j++) {
@@ -112,13 +115,13 @@ class Maze {
         node.update_neighbours(this.map);
       });
     });
-    this.initializePacdots();
+    this.initPacdots();
   }
 
   /**
    * Lägg till all mat i en lista
    */
-  initializePacdots() {
+  initPacdots() {
     this.map.forEach((row) => {
       row.forEach((node) => {
         if (node.type == PATH || node.type == POWERPILL) {

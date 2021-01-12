@@ -1,6 +1,9 @@
+/**
+ * Klass för pacmansfunktioner
+ */
 class Pacman extends PlayerObject {
-  constructor(maze, map) {
-    super({ x: 9, y: 15 }, PACMANSPEED, "yellow", maze, map);
+  constructor(maze) {
+    super({ x: 9, y: 15 }, PACMANSPEED, PACMANCOLOR, maze);
     this.stored_dir = null;
     this.score = 0;
   }
@@ -46,23 +49,6 @@ class Pacman extends PlayerObject {
       this.timer.start(7, () => {
         this.maze.megaEaten = false;
       });
-    }
-  }
-
-  /**
-   * Kolla om pacman är vid en portal,
-   * om så är fallet flytta pacman till andra sidan
-   */
-  checkPortal() {
-    if (this.gridPos.y == 9) {
-      if (this.gridPos.x < 0) {
-        this.gridPos.x = 19;
-        this.stored_dir.x = -1;
-      } else if (this.gridPos.x > 18) {
-        this.gridPos.x = -1;
-        this.stored_dir.x = 1;
-      }
-      this.pixPos.x = this.gridPos.x * SCL;
     }
   }
 

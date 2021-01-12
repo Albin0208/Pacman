@@ -1,3 +1,6 @@
+/**
+ * Klass med grundfunktioner för spelarobjekt
+ */
 class PlayerObject {
   constructor(gridPos, speed, color, maze) {
     this.gridPos = gridPos;
@@ -83,6 +86,23 @@ class PlayerObject {
    */
   checkValidGridPosistion(type) {
     return type != WALL;
+  }
+
+  /**
+   * Kolla om spelaren är vid en portal,
+   * om så är fallet flytta spelaren till andra sidan
+   */
+  checkPortal() {
+    if (this.gridPos.y == 9) {
+      if (this.gridPos.x < 0) {
+        this.gridPos.x = 19;
+        this.stored_dir.x = -1;
+      } else if (this.gridPos.x > 18) {
+        this.gridPos.x = -1;
+        this.stored_dir.x = 1;
+      }
+      this.pixPos.x = this.gridPos.x * SCL;
+    }
   }
 
   /**

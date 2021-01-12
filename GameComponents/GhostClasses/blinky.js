@@ -1,6 +1,15 @@
 class Blinky extends Ghost {
-  constructor(pacpos, maze) {
-    // BLINKYSCATTERPOS, BLINKYSTARTPOS, "red"
-    super(pacpos, BLINKYPROPERTIES, pacpos, maze);
+  constructor(pacman, maze) {
+    super(pacman, BLINKYPROPERTIES, maze);
+    this.type = "blinky";
+  }
+
+  /**
+   * Sätter spökets targetposition
+   */
+  setTarget() {
+    if (this.behaviour != CHASE) return;
+
+    this.targetPos = this.pacman.gridPos;
   }
 }

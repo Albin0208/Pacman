@@ -1,3 +1,6 @@
+/**
+ * Klass för varje nod på spelplanen
+ */
 class Node {
   constructor(x, y, type) {
     this.position = { x: x, y: y };

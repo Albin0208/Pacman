@@ -1,3 +1,6 @@
+/**
+ * Main klass för spelet
+ */
 class Game {
   constructor() {
     this.gameOver = false;
@@ -8,12 +11,12 @@ class Game {
    * Starta spelet
    */
   run() {
-    this.maze.initGame();
+    this.maze.initMaze();
     this.pacman = new Pacman(this.maze);
-    this.blinky = new Blinky(this.pacman.gridPos, this.maze);
-    this.inky = new Inky(this.pacman.gridPos, this.maze);
-    this.pinky = new Pinky(this.pacman.gridPos, this.maze);
-    this.clyde = new Clyde(this.pacman.gridPos, this.maze);
+    this.blinky = new Blinky(this.pacman, this.maze);
+    this.inky = new Inky(this.pacman, this.maze, this.blinky);
+    this.pinky = new Pinky(this.pacman, this.maze);
+    // this.clyde = new Clyde(this.pacman, this.maze);
   }
 
   /**
@@ -22,10 +25,10 @@ class Game {
   displayGame() {
     this.maze.show();
     this.pacman.show();
-    this.blinky.show();
-    this.inky.show();
-    this.pinky.show();
-    this.clyde.show();
+    this.blinky?.show();
+    this.inky?.show();
+    this.pinky?.show();
+    this.clyde?.show();
     if (this.maze.returnGameOver()) {
       this.displayGameOver();
     } else {
@@ -40,10 +43,10 @@ class Game {
   updateGame() {
     if (!this.maze.returnGameOver()) {
       this.pacman.update();
-      this.blinky.update();
-      this.inky.update();
-      this.pinky.update();
-      this.clyde.update();
+      this.blinky?.update();
+      this.inky?.update();
+      this.pinky?.update();
+      this.clyde?.update();
     }
   }
 

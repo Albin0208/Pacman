@@ -61,8 +61,15 @@ class Astar {
       for (let i = 0; i < neighbours.length; i++) {
         var neighbour = neighbours[i];
 
-        //Om vi inte besökt den noden tidigare och den inte är en vägg
-        if (!closedSet.includes(neighbour) && neighbour.type != WALL) {
+        /*
+         Om vi inte besökt den noden tidigare och den inte är en vägg
+         Tillåt också om slutpositionen är en vägg
+         */
+        if (
+          !closedSet.includes(neighbour) &&
+          (neighbour.type != WALL ||
+            (neighbour.position.x == end.x && neighbour.position.y == end.y))
+        ) {
           var gScore = current.g + 1;
           var hScore = 0;
           var gScoreIsBest = false;
