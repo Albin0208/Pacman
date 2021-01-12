@@ -6,8 +6,7 @@ class Ghost extends PlayerObject {
     super(ghostProperties.startPos, CHASESPEED, ghostProperties.color, maze);
     this.pacman = pacman;
     this.targetPos;
-    this.setTarget();
-    this.behaviour = CHASE;
+    this.behaviour = SCATTER;
     this.pathSearch = new Astar(R.clone(this.maze.map)); //R.clone skapar en klon av mappen över spelplanen
     this.bestPath;
     this.previousBehaviour = this.behaviour;
@@ -15,19 +14,30 @@ class Ghost extends PlayerObject {
     this.stayHome = false;
     this.defaultColor = ghostProperties.color;
     this.setBehaviour = new GhostBehaviour(this);
+    this.shouldChase = false;
+    this.timerOn = false;
   }
 
   /**
    * Uppdatera spöket
    */
   update() {
+    //Timer för att gå mellan scatter och chase
+    if (!this.timerOn) {
+      this.shouldChase ? this.timerStart(20) : this.timerStart(7);
+      this.timerOn = true;
+    }
+
     if (this.stayHome) return;
 
-    // this.setBehaviour.setScatter();
     if (this.behaviour != EATEN) {
-      this.maze.megaEaten
-        ? this.setBehaviour.setScared()
-        : this.setBehaviour.setChase();
+      if (this.maze.megaEaten) {
+        this.setBehaviour.setScared();
+        this.timer.pauseTimer();
+      } else if (this.shouldChase) {
+        this.setBehaviour.setChase();
+        this.timer.continue();
+      } else this.setBehaviour.setScatter();
       if (this.checkPacmanCollision()) {
         this.maze.megaEaten ? this.setBehaviour.setEaten() : this.gameOver();
       }
@@ -128,5 +138,16 @@ class Ghost extends PlayerObject {
         this.direction = { x: 0, y: 0 };
       });
     }
+  }
+
+  /**
+   * Starta timer för att gå mellan scatter och chase
+   * @param {Integer} time antal sekunder som timern ska räkna ner från
+   */
+  timerStart(time) {
+    this.timer.start(time, () => {
+      this.shouldChase = !this.shouldChase;
+      this.timerOn = false;
+    });
   }
 }

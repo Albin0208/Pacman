@@ -33,9 +33,9 @@ class GhostBehaviour {
    */
   setChase() {
     this.ghost.color = this.ghost.defaultColor;
-    this.ghost.setTarget();
     this.ghost.behaviour = CHASE;
     this.ghost.speed = CHASESPEED;
+    this.ghost.setTarget();
   }
 
   /**

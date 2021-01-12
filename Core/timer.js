@@ -4,6 +4,7 @@
 class Timer {
   constructor() {
     this.timer;
+    this.pause = false;
   }
 
   /**
@@ -15,11 +16,13 @@ class Timer {
   start(countDownTime, func) {
     this.reset();
     this.timer = setInterval(() => {
-      countDownTime--;
-      console.log(countDownTime);
-      if (countDownTime <= 0) {
-        func();
-        this.reset();
+      if (!this.pause) {
+        countDownTime--;
+        console.log(countDownTime);
+        if (countDownTime <= 0) {
+          func();
+          this.reset();
+        }
       }
     }, 1000);
   }
@@ -29,5 +32,19 @@ class Timer {
    */
   reset() {
     clearInterval(this.timer);
+  }
+
+  /**
+   * Pausa timern
+   */
+  pauseTimer() {
+    this.pause = true;
+  }
+
+  /**
+   * Kör igång timer efter paus
+   */
+  continue() {
+    this.pause = false;
   }
 }

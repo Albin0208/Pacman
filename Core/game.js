@@ -16,7 +16,7 @@ class Game {
     this.blinky = new Blinky(this.pacman, this.maze);
     this.inky = new Inky(this.pacman, this.maze, this.blinky);
     this.pinky = new Pinky(this.pacman, this.maze);
-    // this.clyde = new Clyde(this.pacman, this.maze);
+    this.clyde = new Clyde(this.pacman, this.maze);
   }
 
   /**
