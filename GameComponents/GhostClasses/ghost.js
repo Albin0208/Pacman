@@ -24,6 +24,7 @@ class Ghost extends PlayerObject {
   update() {
     //Timer för att gå mellan scatter och chase
     if (!this.timerOn) {
+      //Scatter i 7 sekunder, Chase i 20 sekunder
       this.shouldChase ? this.timerStart(20) : this.timerStart(7);
       this.timerOn = true;
     }
