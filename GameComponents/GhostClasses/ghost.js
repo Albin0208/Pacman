@@ -16,6 +16,9 @@ class Ghost extends PlayerObject {
     this.setBehaviour = new GhostBehaviour(this);
     this.shouldChase = false;
     this.timerOn = false;
+    this.time = false;
+    this.countDownTime = BLINKTIME;
+    this.previousPos = this.gridPos;
   }
 
   /**
@@ -28,19 +31,22 @@ class Ghost extends PlayerObject {
       this.shouldChase ? this.timerStart(20) : this.timerStart(7);
       this.timerOn = true;
     }
-
+    this.animate();
     if (this.stayHome) return;
 
     if (this.behaviour != EATEN) {
       if (this.maze.megaEaten) {
         this.setBehaviour.setScared();
-        this.timer.pauseTimer();
       } else if (this.shouldChase) {
         this.setBehaviour.setChase();
-        this.timer.continue();
-      } else this.setBehaviour.setScatter();
+      } else {
+        this.setBehaviour.setScatter();
+      }
       if (this.checkPacmanCollision()) {
-        this.maze.megaEaten ? this.setBehaviour.setEaten() : this.gameOver();
+        if (this.maze.megaEaten) {
+          this.setBehaviour.setEaten();
+          this.pacman.ghostEaten();
+        } else this.gameOver();
       }
       this.checkPreviousBehaviour();
     }
@@ -53,6 +59,7 @@ class Ghost extends PlayerObject {
     }
     this.setGridPos();
     this.returnedHome();
+    this.previousPos = this.gridPos;
   }
 
   /**
@@ -118,6 +125,7 @@ class Ghost extends PlayerObject {
     if (this.previousBehaviour != this.behaviour) {
       //Se till att spöket är i mitten av rutan
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
+      this.direction = { x: 0, y: 0 };
     }
     this.previousBehaviour = this.behaviour;
   }
@@ -133,7 +141,8 @@ class Ghost extends PlayerObject {
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
       this.stayHome = true;
       //Starta en timer på 4 sekunder
-      this.timer.start(4, () => {
+      const TIMER = new Timer();
+      TIMER.start(4, () => {
         this.stayHome = false;
         this.setBehaviour.setChase();
         this.direction = { x: 0, y: 0 };
@@ -150,5 +159,22 @@ class Ghost extends PlayerObject {
       this.shouldChase = !this.shouldChase;
       this.timerOn = false;
     });
+  }
+
+  animate() {
+    if (this.maze.megaEaten && !this.time) {
+      this.time = true;
+      var test = setInterval(() => {
+        this.countDownTime--;
+        if (this.countDownTime <= 12) {
+          this.color = this.countDownTime % 2 == 0 ? SCAREDCOLOR : BLINKCOLOR;
+        }
+        if (this.countDownTime == 0) {
+          this.time = false;
+          this.countDownTime = BLINKTIME;
+          clearInterval(test);
+        }
+      }, 250);
+    }
   }
 }

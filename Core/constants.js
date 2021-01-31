@@ -9,6 +9,9 @@ const SCAREDSPEED = 1;
 const EATENSPEED = 3;
 const SCAREDCOLOR = "blue";
 const GHOSTHOMEPOSITION = { x: 9, y: 9 };
+const BLINKCOLOR = "white";
+const BLINKTIME = 28;
+const EATENCOLOR = "gray";
 
 //#region Spökenas egenskaper
 

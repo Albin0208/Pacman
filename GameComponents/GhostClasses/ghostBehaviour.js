@@ -10,7 +10,6 @@ class GhostBehaviour {
    * Hur spöket ska bete sig när den är rädd
    */
   setScared() {
-    this.ghost.color = SCAREDCOLOR;
     if (
       (this.ghost.targetPos.x == this.ghost.gridPos.x &&
         this.ghost.targetPos.y == this.ghost.gridPos.y) ||
@@ -18,14 +17,15 @@ class GhostBehaviour {
       this.ghost.behaviour != SCARED
     )
       this.ghost.targetPos = this.ghost.randPos();
-    this.ghost.speed = SCAREDSPEED;
 
     //Invertera spöket riktning
     if (this.ghost.behaviour != SCARED) {
-      this.ghost.direction.x = -this.ghost.direction.x;
-      this.ghost.direction.y = -this.ghost.direction.y;
+      this.ghost.direction.x -= -this.ghost.previousPos.x;
+      this.ghost.direction.y -= -this.ghost.previousPos.y;
+      this.ghost.color = SCAREDCOLOR;
+      this.ghost.speed = SCAREDSPEED;
+      this.ghost.behaviour = SCARED;
     }
-    this.ghost.behaviour = SCARED;
   }
 
   /**
@@ -42,6 +42,7 @@ class GhostBehaviour {
    * Hur spöket ska bete sig när pacman ska få andrum
    */
   setScatter() {
+    this.ghost.color = this.ghost.defaultColor;
     this.ghost.behaviour = SCATTER;
     this.ghost.speed = SCATTERSPEED;
     this.ghost.targetPos = this.ghost.scatterPos;
@@ -51,6 +52,7 @@ class GhostBehaviour {
    * Hur spöket ska bete sig när den har blivit uppäten
    */
   setEaten() {
+    this.ghost.color = EATENCOLOR;
     this.ghost.targetPos = GHOSTHOMEPOSITION;
     this.ghost.speed = EATENSPEED;
     this.ghost.behaviour = EATEN;

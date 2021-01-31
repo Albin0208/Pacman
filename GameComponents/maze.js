@@ -55,17 +55,21 @@ class Maze {
    * @returns {boolean} Om pacman har ätit en pacdot
    */
   checkPacdot(gridPos) {
-    for (let i = 0; i < this.pacdots.length; i++) {
-      if (
-        this.pacdots[i].position.x == gridPos.x &&
-        this.pacdots[i].position.y == gridPos.y
-      ) {
-        var type = this.pacdots[i].type;
+    if (this.pacdots.length > 0) {
+      for (let i = 0; i < this.pacdots.length; i++) {
+        if (
+          this.pacdots[i].position.x == gridPos.x &&
+          this.pacdots[i].position.y == gridPos.y
+        ) {
+          var type = this.pacdots[i].type;
 
-        // Ta bort maten från arrayen
-        this.pacdots.splice(i, 1);
-        return type;
+          // Ta bort maten från arrayen
+          this.pacdots.splice(i, 1);
+          return type;
+        }
       }
+    } else {
+      this.gameOver = true;
     }
     return false;
   }

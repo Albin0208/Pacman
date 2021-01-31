@@ -6,6 +6,7 @@ class Pacman extends PlayerObject {
     super({ x: 9, y: 15 }, PACMANSPEED, PACMANCOLOR, maze);
     this.stored_dir = null;
     this.score = 0;
+    this.ghostsEaten = 0;
   }
 
   /**
@@ -48,6 +49,7 @@ class Pacman extends PlayerObject {
       this.maze.megaEaten = true;
       this.timer.start(7, () => {
         this.maze.megaEaten = false;
+        this.ghostsEaten = 0;
       });
     }
   }
@@ -69,5 +71,35 @@ class Pacman extends PlayerObject {
    */
   returnScore() {
     return this.score > 0 ? this.score : 0;
+  }
+
+  /**
+   * Bestäm poängen om ett spöke har blivit uppätet
+   */
+  ghostEaten() {
+    if (this.maze.megaEaten) {
+      console.log("Ghosts", this.ghostsEaten);
+      switch (this.ghostsEaten) {
+        case 0:
+          this.score += 200;
+          this.ghostsEaten++;
+          break;
+
+        case 1:
+          this.score += 400;
+          this.ghostsEaten++;
+          break;
+
+        case 2:
+          this.score += 600;
+          this.ghostsEaten++;
+          break;
+
+        default:
+          this.score += 800;
+          this.ghostsEaten++;
+          break;
+      }
+    }
   }
 }
