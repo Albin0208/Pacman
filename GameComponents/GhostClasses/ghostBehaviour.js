@@ -18,8 +18,9 @@ class GhostBehaviour {
     )
       this.ghost.targetPos = this.ghost.randPos();
 
-    //Invertera spöket riktning
+    //Sätt vad som ska hända då spöket byter till scared
     if (this.ghost.behaviour != SCARED) {
+      //Invertera spökets riktning
       this.ghost.direction.x -= -this.ghost.previousPos.x;
       this.ghost.direction.y -= -this.ghost.previousPos.y;
       this.ghost.color = SCAREDCOLOR;

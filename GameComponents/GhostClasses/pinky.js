@@ -1,7 +1,6 @@
 class Pinky extends Ghost {
   constructor(pacman, maze) {
     super(pacman, PINKYPROPERTIES, maze);
-    this.type = "pinky";
   }
 
   /**
@@ -56,10 +55,5 @@ class Pinky extends Ghost {
 
       this.targetPos = { x: tempTargetPos.x, y: tempTargetPos.y };
     }
-    //Temporär ritning av Clydes targetposition
-    push();
-    fill(this.defaultColor);
-    rect(this.targetPos.x * SCL, this.targetPos.y * SCL, SCL);
-    pop();
   }
 }

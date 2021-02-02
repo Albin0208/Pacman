@@ -16,7 +16,6 @@ class Timer {
     this.reset();
     this.timer = setInterval(() => {
       countDownTime--;
-      // console.log(countDownTime);
       if (countDownTime <= 0) {
         func();
         this.reset();

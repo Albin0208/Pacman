@@ -17,6 +17,7 @@ class Ghost extends PlayerObject {
     this.shouldChase = false;
     this.timerOn = false;
     this.time = false;
+    this.animateTimer;
     this.countDownTime = BLINKTIME;
     this.previousPos = this.gridPos;
   }
@@ -123,7 +124,7 @@ class Ghost extends PlayerObject {
   checkPreviousBehaviour() {
     //Om det är ett nytt beteende
     if (this.previousBehaviour != this.behaviour) {
-      //Se till att spöket är i mitten av rutan
+      //Se till att spöket är i mitten av rutan nollställ färdriktningen
       this.pixPos = { x: this.gridPos.x * SCL, y: this.gridPos.y * SCL };
       this.direction = { x: 0, y: 0 };
     }
@@ -144,8 +145,8 @@ class Ghost extends PlayerObject {
       const TIMER = new Timer();
       TIMER.start(4, () => {
         this.stayHome = false;
-        this.setBehaviour.setChase();
         this.direction = { x: 0, y: 0 };
+        this.setBehaviour.setChase();
       });
     }
   }
@@ -161,18 +162,25 @@ class Ghost extends PlayerObject {
     });
   }
 
+  /**
+   * Få spökena att blinka när det är några sekunder kvar på deras scared tid
+   */
   animate() {
-    if (this.maze.megaEaten && !this.time) {
+    if ((this.maze.megaEaten && !this.time) || this.maze.megaRefill) {
+      if (this.maze.megaRefill) {
+        clearInterval(this.animateTimer);
+        this.countDownTime = BLINKTIME;
+        this.maze.megaRefill = false;
+      }
       this.time = true;
-      var test = setInterval(() => {
+      this.animateTimer = setInterval(() => {
         this.countDownTime--;
-        if (this.countDownTime <= 12) {
+        if (this.countDownTime <= 12)
           this.color = this.countDownTime % 2 == 0 ? SCAREDCOLOR : BLINKCOLOR;
-        }
         if (this.countDownTime == 0) {
           this.time = false;
           this.countDownTime = BLINKTIME;
-          clearInterval(test);
+          clearInterval(this.animateTimer);
         }
       }, 250);
     }

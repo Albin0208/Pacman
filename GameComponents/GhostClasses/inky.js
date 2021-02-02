@@ -1,7 +1,6 @@
 class Inky extends Ghost {
   constructor(pacman, maze, blinky) {
     super(pacman, INKYPROPERTIES, maze);
-    this.type = "inky";
     this.blinkyPos = blinky.gridPos;
   }
 
@@ -17,11 +16,13 @@ class Inky extends Ghost {
       y: this.pacman.direction.y,
     };
 
+    //Hämta positionen två steg framför pacman
     let twoStep = {
       x: this.pacman.gridPos.x + direction.x * 2,
       y: this.pacman.gridPos.y + direction.y * 2,
     };
 
+    //Räkna ut skillnaden mellan blinky och två steg framför pacman
     let x = abs(this.blinkyPos.x - twoStep.x);
     let y = abs(this.blinkyPos.y - twoStep.y);
 
@@ -59,10 +60,5 @@ class Inky extends Ghost {
     }
 
     this.targetPos = { x: tempTargetPos.x, y: tempTargetPos.y };
-
-    push();
-    fill(this.defaultColor);
-    rect(this.targetPos.x * SCL, this.targetPos.y * SCL, SCL);
-    pop();
   }
 }

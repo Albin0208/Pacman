@@ -29,6 +29,7 @@ class Maze {
     this.pacdots = [];
     this.map = [];
     this.megaEaten = false;
+    this.megaRefill = false;
     this.gameOver = gameOver;
   }
 
@@ -62,7 +63,6 @@ class Maze {
           this.pacdots[i].position.y == gridPos.y
         ) {
           var type = this.pacdots[i].type;
-
           // Ta bort maten från arrayen
           this.pacdots.splice(i, 1);
           return type;

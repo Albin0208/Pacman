@@ -7,7 +7,7 @@ class Astar {
    * Återskapar den kortaste vägen från slutpunkten
    * till startpunkten
    *
-   * @param {Node} En ruta i rutnätet
+   * @param {Node} node En ruta i rutnätet
    * @returns {array} En array med den kortaste vägen
    */
   pathTo(node) {

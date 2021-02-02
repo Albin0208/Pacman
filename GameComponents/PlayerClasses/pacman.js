@@ -3,7 +3,7 @@
  */
 class Pacman extends PlayerObject {
   constructor(maze) {
-    super({ x: 9, y: 15 }, PACMANSPEED, PACMANCOLOR, maze);
+    super(PACMANSTARTPOS, PACMANSPEED, PACMANCOLOR, maze);
     this.stored_dir = null;
     this.score = 0;
     this.ghostsEaten = 0;
@@ -46,9 +46,11 @@ class Pacman extends PlayerObject {
       this.score += 10;
     } else if (pacDotType == POWERPILL) {
       this.score += 50;
+      if (this.maze.megaEaten) this.maze.megaRefill = true;
       this.maze.megaEaten = true;
       this.timer.start(7, () => {
         this.maze.megaEaten = false;
+        this.maze.megaRefill = false;
         this.ghostsEaten = 0;
       });
     }
@@ -78,7 +80,6 @@ class Pacman extends PlayerObject {
    */
   ghostEaten() {
     if (this.maze.megaEaten) {
-      console.log("Ghosts", this.ghostsEaten);
       switch (this.ghostsEaten) {
         case 0:
           this.score += 200;

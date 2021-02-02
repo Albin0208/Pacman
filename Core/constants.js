@@ -42,6 +42,7 @@ const CLYDEPROPERTIES = {
 //#region Pacman konstanter
 const PACMANSPEED = 2;
 const PACMANCOLOR = "yellow";
+const PACMANSTARTPOS = { x: 9, y: 15 };
 
 //#endregion
 

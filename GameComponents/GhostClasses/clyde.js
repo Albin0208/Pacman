@@ -1,7 +1,6 @@
 class Clyde extends Ghost {
   constructor(pacman, maze) {
     super(pacman, CLYDEPROPERTIES, maze);
-    this.type = "clyde";
   }
 
   /**
@@ -12,11 +11,5 @@ class Clyde extends Ghost {
 
     this.targetPos =
       this.bestPath?.length > 8 ? this.pacman.gridPos : this.scatterPos;
-
-    //Temporär ritning av Clydes targetposition
-    push();
-    fill(this.defaultColor);
-    rect(this.targetPos.x * SCL, this.targetPos.y * SCL, SCL);
-    pop();
   }
 }

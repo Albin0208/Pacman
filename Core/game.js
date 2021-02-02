@@ -8,7 +8,7 @@ class Game {
   }
 
   /**
-   * Starta spelet
+   * Ladda in spelkomponenterna och starta spelet
    */
   run() {
     this.maze.initMaze();
